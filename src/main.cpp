@@ -25,6 +25,8 @@ int main() {
   if (!glfwInit()) {
     std::cerr << "Failed to initialize GLFW\n";
     return -1;
+  } else {
+    std::cout << "GLFW initialized successfully!" << std::endl;
   }
 
   // Use Metal API
@@ -33,13 +35,17 @@ int main() {
 
   // Create GLFW window
   GLFWwindow *window =
-      glfwCreateWindow(800, 600, "Water renderer", nullptr, nullptr);
+      glfwCreateWindow(1000, 800, "Water renderer", nullptr, nullptr);
+
   if (!window) {
     std::cerr << "Failed to create window\n";
     glfwTerminate();
     return -1;
+  } else {
+    std::cout << "Window created successfully!" << std::endl;
   }
 
+  bgfx::renderFrame();
   bgfx::Init init;
   init.type = bgfx::RendererType::Metal;
   init.platformData.nwh = glfwGetCocoaWindow(window);
@@ -51,14 +57,24 @@ int main() {
     std::cerr << "Failed to initialize BGFX!" << std::endl;
     glfwTerminate();
     return -1;
+  } else {
+    std::cout << "BGFX initialized successfully!" << std::endl;
   }
+
+  bgfx::setViewClear(0, BGFX_CLEAR_COLOR | BGFX_CLEAR_DEPTH, 0x202020ff, 1.0f,
+                     0);
+  bgfx::setViewRect(0, 0, 0, 1000, 800);
 
   // Main loop
   while (!glfwWindowShouldClose(window)) {
     glfwPollEvents();
+
+    bgfx::touch(0);
+    bgfx::frame();
   }
 
   // Cleanup
+  bgfx::shutdown();
   glfwDestroyWindow(window);
   glfwTerminate();
 
