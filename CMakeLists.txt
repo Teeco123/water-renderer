@@ -16,7 +16,7 @@ file(GLOB SOURCES src/*.cpp)
 add_executable(WaterRenderer ${SOURCES})
 
 # Link raylib and raygui to the project
-target_link_libraries(WaterRenderer bgfx glfw)
+target_link_libraries(WaterRenderer bgfx glfw bx)
 
 # Set the output directory for the executable to the "bin" folder
 set_target_properties(WaterRenderer PROPERTIES
