@@ -1,6 +1,6 @@
-#include "renderer/Renderer.hpp"
-#include "renderer/Window.hpp"
+#include "renderer/renderer.hpp"
 #include "renderer/shaders.hpp"
+#include "renderer/window.hpp"
 
 int main() {
   Window window(1000, 800, "Water Renderer");
