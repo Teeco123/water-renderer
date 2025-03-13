@@ -51,11 +51,17 @@ int main() {
 
   bgfx::VertexLayout vertexLayout;
   bgfx::VertexBufferHandle vbo;
+  bgfx::IndexBufferHandle ibo;
 
-  static Vertex triangleVertices[] = {
-      {0.0f, 0.5f, 0xFF0000FF},   // Red
-      {-0.5f, -0.5f, 0xFF00FF00}, // Green
-      {0.5f, -0.5f, 0xFFFF0000}   // Blue
+  static Vertex squareVertices[] = {
+      {-1.0f, 1.0f, 0xFF0000FF},  // Top-left (Red)
+      {1.0f, 1.0f, 0xFF00FF00},   // Top-right (Green)
+      {-1.0f, -1.0f, 0xFFFF0000}, // Bottom-left (Blue)
+      {1.0f, -1.0f, 0xFFFFFF00}   // Bottom-right (Yellow)
+  };
+  static const uint16_t squareIndices[] = {
+      0, 2, 1, // First triangle
+      1, 2, 3  // Second triangle
   };
 
   vertexLayout.begin()
@@ -64,7 +70,9 @@ int main() {
       .end();
 
   vbo = bgfx::createVertexBuffer(
-      bgfx::makeRef(triangleVertices, sizeof(triangleVertices)), vertexLayout);
+      bgfx::makeRef(squareVertices, sizeof(squareVertices)), vertexLayout);
+  ibo = bgfx::createIndexBuffer(
+      bgfx::makeRef(squareIndices, sizeof(squareIndices)));
 
   if (!bgfx::isValid(shaderProgram)) {
     printf("invalid shader");
@@ -75,6 +83,7 @@ int main() {
   while (!window.shouldClose()) {
     window.pollEvents();
     bgfx::setVertexBuffer(0, vbo);
+    bgfx::setIndexBuffer(ibo);
     bgfx::setState(BGFX_STATE_DEFAULT);
     bgfx::submit(0, shaderProgram);
     renderer.renderFrame();
