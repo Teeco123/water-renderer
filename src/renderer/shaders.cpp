@@ -25,9 +25,9 @@ Shaders::Shaders(const char *vertexFile, const char *fragmentFile) {
 
   static Vertex squareVertices[] = {
       {-1.0f, 1.0f, 0xFF0000FF},  // Top-left (Red)
-      {1.0f, 1.0f, 0xFF00FF00},   // Top-right (Green)
+      {0.33f, 1.0f, 0xFF00FF00},  // Top-right (Green)
       {-1.0f, -1.0f, 0xFFFF0000}, // Bottom-left (Blue)
-      {1.0f, -1.0f, 0xFFFFFF00}   // Bottom-right (Yellow)
+      {0.33f, -1.0f, 0xFFFFFF00}  // Bottom-right (Yellow)
   };
   static const uint16_t squareIndices[] = {
       0, 2, 1, // First triangle

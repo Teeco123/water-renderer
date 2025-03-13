@@ -3,8 +3,8 @@
 #include "renderer/window.hpp"
 
 int main() {
-  Window window(1000, 800, "Water Renderer");
-  Renderer renderer(window.getNativeWindow(), 1000, 800);
+  Window window(1200, 800, "Water Renderer");
+  Renderer renderer(window.getNativeWindow(), 800, 800);
   Shaders mainShader("src/shaders/vs.sc.bin", "src/shaders/fs.sc.bin");
 
   while (!window.shouldClose()) {
