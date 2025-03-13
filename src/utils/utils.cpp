@@ -22,3 +22,15 @@ const bgfx::Memory *loadShader(const char *filename) {
   bx::close(&fileReader);
   return mem;
 }
+
+int GetRandomValue(int min, int max) {
+  int value = 0;
+  srand(time(0));
+
+  if (min > max) {
+    int tmp = max;
+    max = min;
+    min = tmp;
+  }
+  return value = (rand() % (abs(max - min) + 1) + min);
+}
