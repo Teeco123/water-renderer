@@ -1,4 +1,4 @@
-#include "Window.hpp"
+#include "window.hpp"
 
 Window::Window(int width, int height, const char *title) {
   if (!glfwInit()) {

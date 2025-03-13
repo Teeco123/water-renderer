@@ -1,4 +1,4 @@
-#include "Renderer.hpp"
+#include "renderer.hpp"
 
 #if BX_PLATFORM_LINUX
 #define GLFW_EXPOSE_NATIVE_X11

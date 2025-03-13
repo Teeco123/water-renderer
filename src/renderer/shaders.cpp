@@ -1,4 +1,4 @@
-#include "Shaders.hpp"
+#include "shaders.hpp"
 #include "bgfx/bgfx.h"
 
 Shaders::Shaders(const char *vertexFile, const char *fragmentFile) {
