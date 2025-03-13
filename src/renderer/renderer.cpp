@@ -22,6 +22,7 @@ Renderer::Renderer(GLFWwindow *window, int width, int height)
   init.resolution.width = width;
   init.resolution.height = height;
   init.resolution.reset = BGFX_RESET_VSYNC;
+  init.debug = true;
 
   if (!bgfx::init(init)) {
     std::cerr << "Failed to initialize BGFX!" << std::endl;
