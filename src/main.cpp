@@ -5,11 +5,12 @@
 int main() {
   Window window(1000, 800, "Water Renderer");
   Renderer renderer(window.getNativeWindow(), 1000, 800);
-  Shaders shaders;
+  Shaders mainShader("src/shaders/vs.sc.bin", "src/shaders/fs.sc.bin");
 
   while (!window.shouldClose()) {
     window.pollEvents();
-    shaders.submitShader(shaders.vbo, shaders.ibo, shaders.shaderProgram);
+    mainShader.submitShader(mainShader.vbo, mainShader.ibo,
+                            mainShader.shaderProgram);
     renderer.renderFrame();
   }
 

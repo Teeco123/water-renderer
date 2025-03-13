@@ -26,14 +26,23 @@ const bgfx::Memory *loadShader(const char *filename) {
   return mem;
 }
 
-Shaders::Shaders() {
-  bgfx::ShaderHandle vertexShader =
-      bgfx::createShader(loadShader("src/shaders/vs.sc.bin"));
+Shaders::Shaders(const char *vertexFile, const char *fragmentFile) {
+  //------------------------------------------------------------------------------------
+  // Create shader program
+  bgfx::ShaderHandle vertexShader = bgfx::createShader(loadShader(vertexFile));
   bgfx::ShaderHandle fragmentShader =
-      bgfx::createShader(loadShader("src/shaders/fs.sc.bin"));
+      bgfx::createShader(loadShader(fragmentFile));
 
   this->shaderProgram = bgfx::createProgram(vertexShader, fragmentShader, true);
 
+  if (!bgfx::isValid(shaderProgram)) {
+    std::cout << "Shader is invalid";
+  } else {
+    std::cout << "Shader is valid";
+  }
+
+  //------------------------------------------------------------------------------------
+  // create vertex verticies and index buffers
   struct Vertex {
     float x, y;
     uint32_t color;
@@ -60,12 +69,6 @@ Shaders::Shaders() {
       bgfx::makeRef(squareVertices, sizeof(squareVertices)), vertexLayout);
   this->ibo = bgfx::createIndexBuffer(
       bgfx::makeRef(squareIndices, sizeof(squareIndices)));
-
-  if (!bgfx::isValid(shaderProgram)) {
-    std::cout << "Shader is invalid";
-  } else {
-    std::cout << "Shader is valid";
-  }
 }
 
 Shaders::~Shaders() {}
@@ -73,6 +76,9 @@ Shaders::~Shaders() {}
 void Shaders::submitShader(bgfx::VertexBufferHandle vbo,
                            bgfx::IndexBufferHandle ibo,
                            bgfx::ProgramHandle shaderProgram) {
+
+  //------------------------------------------------------------------------------------
+  // Submit shader to render in while loop
   bgfx::setVertexBuffer(0, vbo);
   bgfx::setIndexBuffer(ibo);
   bgfx::setState(BGFX_STATE_DEFAULT);

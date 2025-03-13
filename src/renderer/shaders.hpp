@@ -7,7 +7,7 @@
 
 class Shaders {
 public:
-  Shaders();
+  Shaders(const char *vertexFile, const char *fragmentFile);
   ~Shaders();
 
   void submitShader(bgfx::VertexBufferHandle vbo, bgfx::IndexBufferHandle ibo,
