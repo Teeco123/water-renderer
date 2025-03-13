@@ -1,4 +1,5 @@
 #include "Shaders.hpp"
+#include "bgfx/bgfx.h"
 
 Shaders::Shaders(const char *vertexFile, const char *fragmentFile) {
   //------------------------------------------------------------------------------------
@@ -45,7 +46,11 @@ Shaders::Shaders(const char *vertexFile, const char *fragmentFile) {
       bgfx::makeRef(squareIndices, sizeof(squareIndices)));
 }
 
-Shaders::~Shaders() {}
+Shaders::~Shaders() {
+  bgfx::destroy(vbo);
+  bgfx::destroy(ibo);
+  bgfx::destroy(shaderProgram);
+}
 
 void Shaders::submitShader(bgfx::VertexBufferHandle vbo,
                            bgfx::IndexBufferHandle ibo,
