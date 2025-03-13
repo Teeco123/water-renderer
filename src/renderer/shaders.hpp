@@ -1,6 +1,7 @@
 #ifndef SHADERS_H
 #define SHADERS_H
 
+#include "../utils/utils.hpp"
 #include "bx/file.h"
 #include <bgfx/bgfx.h>
 #include <iostream>

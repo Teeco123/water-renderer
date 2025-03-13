@@ -10,8 +10,6 @@
 
 #include "GLFW/glfw3native.h"
 
-#include <iostream>
-
 Renderer::Renderer(GLFWwindow *window, int width, int height)
     : width(width), height(height) {
   bgfx::renderFrame();

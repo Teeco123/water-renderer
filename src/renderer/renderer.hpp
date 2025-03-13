@@ -5,6 +5,7 @@
 #include <bgfx/bgfx.h>
 #include <bgfx/platform.h>
 #include <bx/bx.h>
+#include <iostream>
 
 class Renderer {
 public:
