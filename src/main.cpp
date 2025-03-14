@@ -5,7 +5,8 @@
 int main() {
   Window window(1200, 800, "Water Renderer");
   Renderer renderer(window.getNativeWindow(), 800, 800);
-  Shaders mainShader("src/shaders/vs.sc.bin", "src/shaders/fs.sc.bin");
+  Shaders mainShader("src/shaders/shader.vertex.bin",
+                     "src/shaders/shader.fragment.bin");
 
   while (!window.shouldClose()) {
     window.pollEvents();

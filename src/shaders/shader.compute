@@ -1,0 +1,10 @@
+#include "bgfx_compute.sh"
+
+BUFFER_RW(positions, vec2, 0);
+
+NUM_THREADS(512, 512, 1)
+void main() {
+  uint key = gl_GlobalInvocationID.x;
+
+  positions[key] = vec2(1.0, 2.0);
+}
