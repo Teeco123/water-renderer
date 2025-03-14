@@ -2,6 +2,53 @@
 
 BUFFER_RW(positions, vec2, 0);
 
+
+uint rotl(uint _x, uint _r)
+{
+	return (_x << _r) | (_x >> (32u - _r) );
+}
+
+uint hash(uint _key, uint _seed)
+{
+	uint c1 = 0xcc9e2d51u;
+	uint c2 = 0x1b873593u;
+
+	uint k1 = _key;
+	uint h1 = _seed;
+	k1 *= c1;
+	k1 = rotl(k1, 15u);
+	k1 *= c2;
+
+	h1 ^= k1;
+	h1 = rotl(h1, 13u);
+	h1 = h1 * 5u + 0xe6546b64u;
+	k1 *= c1;
+	k1 = rotl(k1, 15u);
+	k1 *= c2;
+	h1 ^= k1;
+
+	h1 ^= h1 >> uint(16u);
+	h1 *= 0x85ebca6bu;
+	h1 ^= h1 >> 13u;
+	h1 *= 0xc2b2ae35u;
+	h1 ^= h1 >> 16u;
+
+	return h1;
+}
+
+vec2 randomVec2Points(uint _id, uint _seed)
+{
+	uvec2 u = uvec2(
+			hash(_id, _seed + 0u),
+			hash(_id, _seed + 1u)
+			);
+
+	vec2 v = uintBitsToFloat( (u >> 9u) | 0x3f800000u) * 2.0 - 3.0;
+
+	return v;
+}
+
+
 NUM_THREADS(512, 1, 1)
 void main() {
   uint key = gl_GlobalInvocationID.x;
