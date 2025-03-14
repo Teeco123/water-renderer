@@ -12,12 +12,17 @@ public:
   ~Shaders();
 
   void submitShader(bgfx::VertexBufferHandle vbo, bgfx::IndexBufferHandle ibo,
-                    bgfx::ProgramHandle shaderProgram);
+                    bgfx::ProgramHandle shaderProgram,
+                    bgfx::ProgramHandle computeProgram,
+                    bgfx::DynamicVertexBufferHandle computeBuffer);
 
 public:
   bgfx::VertexBufferHandle vbo;
   bgfx::IndexBufferHandle ibo;
   bgfx::ProgramHandle shaderProgram;
+
+  bgfx::ProgramHandle computeProgram;
+  bgfx::DynamicVertexBufferHandle computeBuffer;
 };
 
 #endif

@@ -1,2 +1,2 @@
 vec2 a_position  : POSITION;
-vec2 v_texCoord  : TEXCOORD0; // Pass UV coordinates to fragment shader
+vec4 v_color0    : COLOR0

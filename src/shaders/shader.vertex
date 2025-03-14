@@ -1,9 +1,9 @@
 $input  a_position
-$output v_texCoord
+$output v_color0
 
 #include <bgfx_shader.sh>
 
 void main() {
-    v_texCoord = a_position.xy * 0.5 + 0.5; // Convert [-1,1] to [0,1] range
-    gl_Position = vec4(a_position, 0.0, 1.0); // Set position
+    gl_Position = vec4(a_position, 0.0, 1.0);
+    v_color0 = vec4(a_position,1.0,1.0);
 }

@@ -44,6 +44,21 @@ Shaders::Shaders(const char *vertexFile, const char *fragmentFile) {
       bgfx::makeRef(squareVertices, sizeof(squareVertices)), vertexLayout);
   this->ibo = bgfx::createIndexBuffer(
       bgfx::makeRef(squareIndices, sizeof(squareIndices)));
+
+  bgfx::ShaderHandle computeShader =
+      bgfx::createShader(loadShader("src/shaders/shader.compute.bin"));
+  this->computeProgram = bgfx::createProgram(computeShader);
+
+  const uint32_t numVertices = 1000;
+  const uint32_t bufferSize = numVertices * 2 * sizeof(float);
+  float *vertices = new float[numVertices * 2];
+
+  bgfx::VertexLayout computeLayout;
+  computeLayout.begin().add(bgfx::Attrib::Position, 2, bgfx::AttribType::Float);
+
+  this->computeBuffer = bgfx::createDynamicVertexBuffer(
+      bgfx::makeRef(vertices, bufferSize), computeLayout,
+      BGFX_BUFFER_COMPUTE_READ_WRITE);
 }
 
 Shaders::~Shaders() {
@@ -54,12 +69,19 @@ Shaders::~Shaders() {
 
 void Shaders::submitShader(bgfx::VertexBufferHandle vbo,
                            bgfx::IndexBufferHandle ibo,
-                           bgfx::ProgramHandle shaderProgram) {
+                           bgfx::ProgramHandle shaderProgram,
+                           bgfx::ProgramHandle computeProgram,
+                           bgfx::DynamicVertexBufferHandle computeBuffer) {
 
   //------------------------------------------------------------------------------------
   // Submit shader to render in while loop
-  bgfx::setVertexBuffer(0, vbo);
+  bgfx::setBuffer(0, computeBuffer, bgfx::Access::ReadWrite);
+
+  bgfx::dispatch(0, computeProgram);
+
+  bgfx::setVertexBuffer(0, computeBuffer);
   bgfx::setIndexBuffer(ibo);
   bgfx::setState(BGFX_STATE_DEFAULT);
+
   bgfx::submit(0, shaderProgram);
 }
