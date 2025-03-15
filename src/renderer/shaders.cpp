@@ -46,7 +46,7 @@ Shaders::Shaders(const char *vertexFile, const char *fragmentFile) {
       bgfx::makeRef(squareIndices, sizeof(squareIndices)));
 
   bgfx::ShaderHandle computeShader =
-      bgfx::createShader(loadShader("src/shaders/shader.compute.bin"));
+      bgfx::createShader(loadShader("src/shaders/posGen.compute.bin"));
   this->computeProgram = bgfx::createProgram(computeShader);
 
   const uint32_t numVertices = 1000;
