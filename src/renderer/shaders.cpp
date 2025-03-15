@@ -49,16 +49,18 @@ Shaders::Shaders(const char *vertexFile, const char *fragmentFile) {
       bgfx::createShader(loadShader("src/shaders/posGen.compute.bin"));
   this->computeProgram = bgfx::createProgram(computeShader);
 
-  const uint32_t numVertices = 1000;
-  const uint32_t bufferSize = numVertices * 2 * sizeof(float);
-  float *vertices = new float[numVertices * 2];
-
   bgfx::VertexLayout computeLayout;
-  computeLayout.begin().add(bgfx::Attrib::Position, 2, bgfx::AttribType::Float);
+  computeLayout.begin()
+      .add(bgfx::Attrib::Position, 2, bgfx::AttribType::Float)
+      .add(bgfx::Attrib::Color0, 4, bgfx::AttribType::Float)
+      .end();
+
+  uint32_t projectileCount = 1 * 256;
+  uint32_t stride = computeLayout.getStride();
+  uint32_t bufferSize = projectileCount * stride;
 
   this->computeBuffer = bgfx::createDynamicVertexBuffer(
-      bgfx::makeRef(vertices, bufferSize), computeLayout,
-      BGFX_BUFFER_COMPUTE_READ_WRITE);
+      bufferSize, computeLayout, BGFX_BUFFER_COMPUTE_READ_WRITE);
 }
 
 Shaders::~Shaders() {
@@ -77,7 +79,7 @@ void Shaders::submitShader(bgfx::VertexBufferHandle vbo,
   // Submit shader to render in while loop
   bgfx::setBuffer(0, computeBuffer, bgfx::Access::ReadWrite);
 
-  bgfx::dispatch(0, computeProgram);
+  bgfx::dispatch(0, computeProgram, 256 / 256, 1, 1);
 
   bgfx::setVertexBuffer(0, computeBuffer);
   bgfx::setIndexBuffer(ibo);
