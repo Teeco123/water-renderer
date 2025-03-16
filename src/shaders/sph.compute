@@ -1,6 +1,13 @@
 #include "bgfx_compute.sh"
 
+BUFFER_RW(u_particle, vec2, 0);
+BUFFER_RW(u_pixels, vec4, 1);
+
 NUM_THREADS(16, 16, 1)
 void main() {
+  uint idx = gl_GlobalInvocationID.x;
+  uint idy = gl_GlobalInvocationID.y;
 
+  vec2 positions = u_particle[idx];
+  u_pixels[idx] = vec4(positions, 1.0, 1.0);
 }
