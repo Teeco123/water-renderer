@@ -7,5 +7,5 @@ BUFFER_RW(u_particle, vec2, 0);
 
 void main()
 {
-	gl_FragColor = vec4(u_particle[1],1.0,1.0);
+	gl_FragColor = vec4(u_particle[10],1.0,1.0);
 }

@@ -16,7 +16,10 @@ public:
                     bgfx::ProgramHandle posGenProgram,
                     bgfx::ProgramHandle sphProgram,
                     bgfx::DynamicVertexBufferHandle projectileBuffer,
-                    bgfx::DynamicVertexBufferHandle pixelsBuffer);
+                    bgfx::DynamicVertexBufferHandle pixelsBuffer,
+                    bgfx::UniformHandle u_numPoints,
+                    bgfx::UniformHandle u_radius,
+                    bgfx::UniformHandle u_resolution);
 
 public:
   bgfx::VertexBufferHandle vbo;
@@ -27,6 +30,9 @@ public:
   bgfx::ProgramHandle sphProgram;
   bgfx::DynamicVertexBufferHandle projectileBuffer;
   bgfx::DynamicVertexBufferHandle pixelsBuffer;
+  bgfx::UniformHandle u_numPoints;
+  bgfx::UniformHandle u_radius;
+  bgfx::UniformHandle u_resolution;
 };
 
 #endif

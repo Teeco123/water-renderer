@@ -79,6 +79,12 @@ Shaders::Shaders(const char *vertexFile, const char *fragmentFile) {
 
   this->pixelsBuffer = bgfx::createDynamicVertexBuffer(
       pixelsBufferSize, pixelsLayout, BGFX_BUFFER_COMPUTE_READ_WRITE);
+
+  //------------------------------------------------------------------------------------
+  // Setting uniforms
+  u_numPoints = bgfx::createUniform("u_numPoints", bgfx::UniformType::Vec4);
+  u_radius = bgfx::createUniform("u_radius", bgfx::UniformType::Vec4);
+  u_resolution = bgfx::createUniform("u_resolution", bgfx::UniformType::Vec4);
 }
 
 Shaders::~Shaders() {
@@ -93,7 +99,10 @@ void Shaders::submitShader(bgfx::VertexBufferHandle vbo,
                            bgfx::ProgramHandle posGenProgram,
                            bgfx::ProgramHandle sphProgram,
                            bgfx::DynamicVertexBufferHandle projectileBuffer,
-                           bgfx::DynamicVertexBufferHandle pixelsBuffer) {
+                           bgfx::DynamicVertexBufferHandle pixelsBuffer,
+                           bgfx::UniformHandle u_numPoints,
+                           bgfx::UniformHandle u_radius,
+                           bgfx::UniformHandle u_resolution) {
 
   //------------------------------------------------------------------------------------
   // Submit shader to render in while loop

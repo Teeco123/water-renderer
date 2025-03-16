@@ -13,7 +13,8 @@ int main() {
     mainShader.submitShader(mainShader.vbo, mainShader.ibo,
                             mainShader.shaderProgram, mainShader.posGenProgram,
                             mainShader.sphProgram, mainShader.projectileBuffer,
-                            mainShader.pixelsBuffer);
+                            mainShader.pixelsBuffer, mainShader.u_numPoints,
+                            mainShader.u_radius, mainShader.u_resolution);
     renderer.renderFrame();
   }
 
