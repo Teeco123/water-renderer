@@ -11,8 +11,9 @@ int main() {
   while (!window.shouldClose()) {
     window.pollEvents();
     mainShader.submitShader(mainShader.vbo, mainShader.ibo,
-                            mainShader.shaderProgram, mainShader.computeProgram,
-                            mainShader.computeBuffer);
+                            mainShader.shaderProgram, mainShader.posGenProgram,
+                            mainShader.sphProgram, mainShader.projectileBuffer,
+                            mainShader.pixelsBuffer);
     renderer.renderFrame();
   }
 

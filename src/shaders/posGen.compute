@@ -1,11 +1,7 @@
 #include "bgfx_compute.sh"
 
-struct Particle {
-    vec2 position;
-    vec4 color;
-};
 
-BUFFER_RW(u_particle, Particle, 0);
+BUFFER_RW(u_particle, vec2, 0);
 
 
 uint rotl(uint _x, uint _r)
@@ -57,9 +53,7 @@ vec2 randomVec2Points(uint _id, uint _seed)
 NUM_THREADS(256, 1, 1)
 void main() {
   uint idx = gl_GlobalInvocationID.x;
+  uint idy = gl_GlobalInvocationID.y;
 
-  Particle part = u_particle[idx];
-  part.position = randomVec2Points(idx, idx);
-
-  u_particle[idx] = part;
+  u_particle[idx] = randomVec2Points(idx,idy);
 }

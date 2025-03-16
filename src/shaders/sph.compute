@@ -1,0 +1,6 @@
+#include "bgfx_compute.sh"
+
+NUM_THREADS(16, 16, 1)
+void main() {
+
+}

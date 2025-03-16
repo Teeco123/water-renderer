@@ -45,22 +45,40 @@ Shaders::Shaders(const char *vertexFile, const char *fragmentFile) {
   this->ibo = bgfx::createIndexBuffer(
       bgfx::makeRef(squareIndices, sizeof(squareIndices)));
 
-  bgfx::ShaderHandle computeShader =
+  bgfx::ShaderHandle posGenShader =
       bgfx::createShader(loadShader("src/shaders/posGen.compute.bin"));
-  this->computeProgram = bgfx::createProgram(computeShader);
+  this->posGenProgram = bgfx::createProgram(posGenShader);
+  bgfx::ShaderHandle sphShader =
+      bgfx::createShader(loadShader("src/shaders/sph.compute.bin"));
+  this->sphProgram = bgfx::createProgram(sphShader);
 
-  bgfx::VertexLayout computeLayout;
-  computeLayout.begin()
+  //------------------------------------------------------------------------------------
+  // Layout for projectiles
+  bgfx::VertexLayout projectileLayout;
+  projectileLayout.begin()
       .add(bgfx::Attrib::Position, 2, bgfx::AttribType::Float)
-      .add(bgfx::Attrib::Color0, 4, bgfx::AttribType::Float)
       .end();
 
   uint32_t projectileCount = 1 * 256;
-  uint32_t stride = computeLayout.getStride();
-  uint32_t bufferSize = projectileCount * stride;
+  uint32_t posBufferstride = projectileLayout.getStride();
+  uint32_t posBufferSize = projectileCount * posBufferSize;
 
-  this->computeBuffer = bgfx::createDynamicVertexBuffer(
-      bufferSize, computeLayout, BGFX_BUFFER_COMPUTE_READ_WRITE);
+  this->projectileBuffer = bgfx::createDynamicVertexBuffer(
+      posBufferSize, projectileLayout, BGFX_BUFFER_COMPUTE_READ_WRITE);
+
+  //------------------------------------------------------------------------------------
+  // Layout for pixels on screen
+  bgfx::VertexLayout pixelsLayout;
+  pixelsLayout.begin()
+      .add(bgfx::Attrib::Color0, 4, bgfx::AttribType::Float)
+      .end();
+
+  uint32_t pixelsCount = 800 * 800;
+  uint32_t pixelsBufferStride = pixelsLayout.getStride();
+  uint32_t pixelsBufferSize = pixelsCount * pixelsBufferStride;
+
+  this->pixelsBuffer = bgfx::createDynamicVertexBuffer(
+      pixelsBufferSize, pixelsLayout, BGFX_BUFFER_COMPUTE_READ_WRITE);
 }
 
 Shaders::~Shaders() {
@@ -72,18 +90,25 @@ Shaders::~Shaders() {
 void Shaders::submitShader(bgfx::VertexBufferHandle vbo,
                            bgfx::IndexBufferHandle ibo,
                            bgfx::ProgramHandle shaderProgram,
-                           bgfx::ProgramHandle computeProgram,
-                           bgfx::DynamicVertexBufferHandle computeBuffer) {
+                           bgfx::ProgramHandle posGenProgram,
+                           bgfx::ProgramHandle sphProgram,
+                           bgfx::DynamicVertexBufferHandle projectileBuffer,
+                           bgfx::DynamicVertexBufferHandle pixelsBuffer) {
 
   //------------------------------------------------------------------------------------
   // Submit shader to render in while loop
-  bgfx::setBuffer(0, computeBuffer, bgfx::Access::ReadWrite);
+  bgfx::setBuffer(0, projectileBuffer, bgfx::Access::ReadWrite);
+  bgfx::dispatch(0, posGenProgram, 256 / 256, 1, 1);
+  bgfx::frame();
 
-  bgfx::dispatch(0, computeProgram, 256 / 256, 1, 1);
+  bgfx::setBuffer(0, projectileBuffer, bgfx::Access::ReadWrite);
+  bgfx::setBuffer(1, pixelsBuffer, bgfx::Access::ReadWrite);
+  bgfx::dispatch(0, sphProgram, 800 / 15, 800 / 15, 1);
+  bgfx::frame();
 
-  bgfx::setVertexBuffer(0, computeBuffer);
+  bgfx::setVertexBuffer(0, vbo);
   bgfx::setIndexBuffer(ibo);
+  bgfx::setBuffer(0, projectileBuffer, bgfx::Access::Read);
   bgfx::setState(BGFX_STATE_DEFAULT);
-
   bgfx::submit(0, shaderProgram);
 }

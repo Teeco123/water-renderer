@@ -1,8 +1,11 @@
 $input v_color0
 
 #include <bgfx_shader.sh>
+#include <bgfx_compute.sh>
+
+BUFFER_RW(u_particle, vec2, 0);
 
 void main()
 {
-	gl_FragColor = v_color0;
+	gl_FragColor = vec4(u_particle[1],1.0,1.0);
 }
