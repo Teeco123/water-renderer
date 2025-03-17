@@ -7,6 +7,44 @@ uniform vec4 u_numPoints;
 uniform vec4 u_radius;
 uniform vec4 u_resolution;
 
+float SmoothingKernel(float radius, float dst) {
+    float volume = 3.14159265359 * pow(radius, 8.0) / 4.0;
+    float squared = radius * radius - dst * dst;
+    float value = (squared > 0.0) ? squared : 0.0;
+    
+    return (value * value * value) / volume;
+}
+
+float Distance2Vectors(vec2 A, vec2 B) {
+    return length(A - B);
+}
+
+float CalculateDensity(vec2 samplePoint) {
+    float density = 0.0;
+    const float mass = 1.0;
+
+    for (int i = 0; i < u_numPoints.x; i++) {
+        vec2 normalizedPoint = (u_particle[i] + 1) / 2;
+        float normalizedRadius = u_radius.x / u_resolution.x;
+
+        float dst = Distance2Vectors(samplePoint, normalizedPoint);
+        float influence = SmoothingKernel(normalizedRadius, dst);
+        density += mass * influence;
+    }
+    return density;
+}
+
+vec4 DensityToColor(float density) {
+    vec3 lowDensity = vec3(0.0, 0.0, 0.0);
+    vec3 highDensity = vec3(0.3, 0.75, 1.0);
+
+    float normalizedDensity = clamp(density / 500, 0.0, 1.0);
+
+    vec3 color = mix(lowDensity, highDensity, normalizedDensity);
+
+    return vec4(color, 1.0);
+}
+
 NUM_THREADS(16, 16, 1)
 void main() {
   uint idx = gl_GlobalInvocationID.x;
@@ -15,6 +53,8 @@ void main() {
 
   vec2 uv = gl_GlobalInvocationID.xy / u_resolution.xy;
 
-  u_pixels[id] = vec4(uv.x,uv.y, 1.0, 1.0);
+  float density = CalculateDensity(uv);
+  vec4 color = DensityToColor(density);
+  u_pixels[id] = color;
 
 }

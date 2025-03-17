@@ -77,7 +77,7 @@ Shaders::Shaders(const char *vertexFile, const char *fragmentFile) {
 
   //------------------------------------------------------------------------------------
   // Setting uniforms
-  this->radius = 10;
+  this->radius = 50;
   this->resolution = {1280, 720};
 
   u_numPoints = bgfx::createUniform("u_numPoints", bgfx::UniformType::Vec4);
