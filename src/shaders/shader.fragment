@@ -4,8 +4,17 @@ $input v_color0
 #include <bgfx_compute.sh>
 
 BUFFER_RW(u_particle, vec2, 0);
+BUFFER_RW(u_pixel,vec4,1);
+
+uniform vec4 u_numPoints;
+uniform vec4 u_radius;
+uniform vec4 u_resolution;
 
 void main()
 {
-	gl_FragColor = vec4(u_particle[10],1.0,1.0);
+  uint idx = gl_FragCoord.x;
+  uint idy = gl_FragCoord.y;
+  uint id = idy * u_resolution.x + idx;
+  
+	gl_FragColor = u_pixel[id];
 }

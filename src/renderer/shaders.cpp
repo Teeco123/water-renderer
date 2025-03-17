@@ -61,8 +61,8 @@ Shaders::Shaders(const char *vertexFile, const char *fragmentFile) {
       .end();
 
   this->projectileCount = 1 * 256;
-  uint32_t posBufferstride = projectileLayout.getStride();
-  uint32_t posBufferSize = projectileCount * posBufferSize;
+  uint32_t posBufferStride = projectileLayout.getStride();
+  uint32_t posBufferSize = projectileCount * posBufferStride;
 
   this->projectileBuffer = bgfx::createDynamicVertexBuffer(
       posBufferSize, projectileLayout, BGFX_BUFFER_COMPUTE_READ_WRITE);
@@ -119,19 +119,25 @@ void Shaders::submitShader(
   bgfx::setUniform(u_numPoints, &projectileCount);
   bgfx::setUniform(u_radius, &radius);
   bgfx::setUniform(u_resolution, &resolution);
-
   bgfx::setBuffer(0, projectileBuffer, bgfx::Access::ReadWrite);
   bgfx::dispatch(0, posGenProgram, 256 / 256, 1, 1);
   bgfx::frame();
 
+  bgfx::setUniform(u_numPoints, &projectileCount);
+  bgfx::setUniform(u_radius, &radius);
+  bgfx::setUniform(u_resolution, &resolution);
   bgfx::setBuffer(0, projectileBuffer, bgfx::Access::ReadWrite);
   bgfx::setBuffer(1, pixelsBuffer, bgfx::Access::ReadWrite);
-  bgfx::dispatch(0, sphProgram, 800 / 15, 800 / 15, 1);
+  bgfx::dispatch(0, sphProgram, 800 / 16, 800 / 16, 1);
   bgfx::frame();
 
   bgfx::setVertexBuffer(0, vbo);
   bgfx::setIndexBuffer(ibo);
+  bgfx::setUniform(u_numPoints, &projectileCount);
+  bgfx::setUniform(u_radius, &radius);
+  bgfx::setUniform(u_resolution, &resolution);
   bgfx::setBuffer(0, projectileBuffer, bgfx::Access::Read);
+  bgfx::setBuffer(1, pixelsBuffer, bgfx::Access::ReadWrite);
   bgfx::setState(BGFX_STATE_DEFAULT);
   bgfx::submit(0, shaderProgram);
 }
