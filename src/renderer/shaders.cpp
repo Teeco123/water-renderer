@@ -60,7 +60,7 @@ Shaders::Shaders(const char *vertexFile, const char *fragmentFile) {
       .add(bgfx::Attrib::Position, 2, bgfx::AttribType::Float)
       .end();
 
-  uint32_t projectileCount = 1 * 256;
+  this->projectileCount = 1 * 256;
   uint32_t posBufferstride = projectileLayout.getStride();
   uint32_t posBufferSize = projectileCount * posBufferSize;
 
@@ -74,9 +74,7 @@ Shaders::Shaders(const char *vertexFile, const char *fragmentFile) {
       .add(bgfx::Attrib::Color0, 4, bgfx::AttribType::Float)
       .end();
 
-  this->radius = 10;
-  this->resolution = {800, 800};
-  this->pixelsCount = resolution.x * resolution.y;
+  uint32_t pixelsCount = 800 * 800;
   uint32_t pixelsBufferStride = pixelsLayout.getStride();
   uint32_t pixelsBufferSize = pixelsCount * pixelsBufferStride;
 
@@ -85,6 +83,9 @@ Shaders::Shaders(const char *vertexFile, const char *fragmentFile) {
 
   //------------------------------------------------------------------------------------
   // Setting uniforms
+  this->radius = 10;
+  this->resolution = {800, 800};
+
   u_numPoints = bgfx::createUniform("u_numPoints", bgfx::UniformType::Vec4);
   u_radius = bgfx::createUniform("u_radius", bgfx::UniformType::Vec4);
   u_resolution = bgfx::createUniform("u_resolution", bgfx::UniformType::Vec4);
@@ -103,20 +104,22 @@ Shaders::~Shaders() {
   bgfx::destroy(u_resolution);
 }
 
-void Shaders::submitShader(bgfx::VertexBufferHandle vbo,
-                           bgfx::IndexBufferHandle ibo,
-                           bgfx::ProgramHandle shaderProgram,
-                           bgfx::ProgramHandle posGenProgram,
-                           bgfx::ProgramHandle sphProgram,
-                           bgfx::DynamicVertexBufferHandle projectileBuffer,
-                           bgfx::DynamicVertexBufferHandle pixelsBuffer,
-                           bgfx::UniformHandle u_numPoints,
-                           bgfx::UniformHandle u_radius,
-                           bgfx::UniformHandle u_resolution, float pixelsCount,
-                           float radius, Vec2 resolution) {
+void Shaders::submitShader(
+    bgfx::VertexBufferHandle vbo, bgfx::IndexBufferHandle ibo,
+    bgfx::ProgramHandle shaderProgram, bgfx::ProgramHandle posGenProgram,
+    bgfx::ProgramHandle sphProgram,
+    bgfx::DynamicVertexBufferHandle projectileBuffer,
+    bgfx::DynamicVertexBufferHandle pixelsBuffer,
+    bgfx::UniformHandle u_numPoints, bgfx::UniformHandle u_radius,
+    bgfx::UniformHandle u_resolution, float projectileCount, float radius,
+    Vec2 resolution) {
 
   //------------------------------------------------------------------------------------
   // Submit shader to render in while loop
+  bgfx::setUniform(u_numPoints, &projectileCount);
+  bgfx::setUniform(u_radius, &radius);
+  bgfx::setUniform(u_resolution, &resolution);
+
   bgfx::setBuffer(0, projectileBuffer, bgfx::Access::ReadWrite);
   bgfx::dispatch(0, posGenProgram, 256 / 256, 1, 1);
   bgfx::frame();
@@ -128,9 +131,6 @@ void Shaders::submitShader(bgfx::VertexBufferHandle vbo,
 
   bgfx::setVertexBuffer(0, vbo);
   bgfx::setIndexBuffer(ibo);
-  bgfx::setUniform(u_numPoints, &pixelsCount);
-  bgfx::setUniform(u_radius, &radius);
-  bgfx::setUniform(u_resolution, &resolution);
   bgfx::setBuffer(0, projectileBuffer, bgfx::Access::Read);
   bgfx::setState(BGFX_STATE_DEFAULT);
   bgfx::submit(0, shaderProgram);

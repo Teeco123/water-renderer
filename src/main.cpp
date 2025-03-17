@@ -15,7 +15,7 @@ int main() {
         mainShader.posGenProgram, mainShader.sphProgram,
         mainShader.projectileBuffer, mainShader.pixelsBuffer,
         mainShader.u_numPoints, mainShader.u_radius, mainShader.u_resolution,
-        mainShader.pixelsCount, mainShader.radius, mainShader.resolution);
+        mainShader.projectileCount, mainShader.radius, mainShader.resolution);
     renderer.renderFrame();
   }
 

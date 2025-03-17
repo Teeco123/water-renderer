@@ -40,7 +40,7 @@ public:
   bgfx::UniformHandle u_radius;
   bgfx::UniformHandle u_resolution;
 
-  float pixelsCount;
+  float projectileCount;
   float radius;
   Vec2 resolution;
 };
