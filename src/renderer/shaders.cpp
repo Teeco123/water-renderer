@@ -21,15 +21,10 @@ Shaders::Shaders(const char *vertexFile, const char *fragmentFile) {
   // create vertex verticies and index buffers
   struct Vertex {
     float x, y;
-    uint32_t color;
   };
 
   static Vertex squareVertices[] = {
-      {-1.0f, 1.0f, 0xFF0000FF},  // Top-left (Red)
-      {0.33f, 1.0f, 0xFF00FF00},  // Top-right (Green)
-      {-1.0f, -1.0f, 0xFFFF0000}, // Bottom-left (Blue)
-      {0.33f, -1.0f, 0xFFFFFF00}  // Bottom-right (Yellow)
-  };
+      {-1.0f, 1.0f}, {1.0f, 1.0f}, {-1.0f, -1.0f}, {1.0f, -1.0f}};
   static const uint16_t squareIndices[] = {
       0, 2, 1, // First triangle
       1, 2, 3  // Second triangle
@@ -38,7 +33,6 @@ Shaders::Shaders(const char *vertexFile, const char *fragmentFile) {
   bgfx::VertexLayout vertexLayout;
   vertexLayout.begin()
       .add(bgfx::Attrib::Position, 2, bgfx::AttribType::Float)
-      .add(bgfx::Attrib::Color0, 4, bgfx::AttribType::Uint8, true)
       .end();
 
   this->vbo = bgfx::createVertexBuffer(
@@ -74,7 +68,7 @@ Shaders::Shaders(const char *vertexFile, const char *fragmentFile) {
       .add(bgfx::Attrib::Color0, 4, bgfx::AttribType::Float)
       .end();
 
-  uint32_t pixelsCount = 800 * 800;
+  uint32_t pixelsCount = 1280 * 720;
   uint32_t pixelsBufferStride = pixelsLayout.getStride();
   uint32_t pixelsBufferSize = pixelsCount * pixelsBufferStride;
 
@@ -84,7 +78,7 @@ Shaders::Shaders(const char *vertexFile, const char *fragmentFile) {
   //------------------------------------------------------------------------------------
   // Setting uniforms
   this->radius = 10;
-  this->resolution = {800, 800};
+  this->resolution = {1280, 720};
 
   u_numPoints = bgfx::createUniform("u_numPoints", bgfx::UniformType::Vec4);
   u_radius = bgfx::createUniform("u_radius", bgfx::UniformType::Vec4);
@@ -128,7 +122,7 @@ void Shaders::submitShader(
   bgfx::setUniform(u_resolution, &resolution);
   bgfx::setBuffer(0, projectileBuffer, bgfx::Access::ReadWrite);
   bgfx::setBuffer(1, pixelsBuffer, bgfx::Access::ReadWrite);
-  bgfx::dispatch(0, sphProgram, 800 / 16, 800 / 16, 1);
+  bgfx::dispatch(0, sphProgram, 1280 / 16, 720 / 16, 1);
   bgfx::frame();
 
   bgfx::setVertexBuffer(0, vbo);

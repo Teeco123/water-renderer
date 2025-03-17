@@ -3,8 +3,8 @@
 #include "renderer/window.hpp"
 
 int main() {
-  Window window(1200, 800, "Water Renderer");
-  Renderer renderer(window.getNativeWindow(), 800, 800);
+  Window window(1280, 720, "Water Renderer");
+  Renderer renderer(window.getNativeWindow(), 1280, 720);
   Shaders mainShader("src/shaders/shader.vertex.bin",
                      "src/shaders/shader.fragment.bin");
 
