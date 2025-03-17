@@ -3,6 +3,10 @@
 BUFFER_RW(u_particle, vec2, 0);
 BUFFER_RW(u_pixels, vec4, 1);
 
+uniform vec4 u_numPoints;
+uniform vec4 u_radius;
+uniform vec4 u_resolution;
+
 NUM_THREADS(16, 16, 1)
 void main() {
   uint idx = gl_GlobalInvocationID.x;
@@ -10,4 +14,7 @@ void main() {
 
   vec2 positions = u_particle[idx];
   u_pixels[idx] = vec4(positions, 1.0, 1.0);
+  u_pixels[0].x = u_numPoints.x;
+  u_pixels[1].x = u_radius.x;
+  u_pixels[2].xy = u_resolution.xy;
 }

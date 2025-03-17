@@ -1,5 +1,6 @@
 #include "shaders.hpp"
 #include "bgfx/bgfx.h"
+#include <cstdint>
 
 Shaders::Shaders(const char *vertexFile, const char *fragmentFile) {
   //------------------------------------------------------------------------------------
@@ -73,7 +74,9 @@ Shaders::Shaders(const char *vertexFile, const char *fragmentFile) {
       .add(bgfx::Attrib::Color0, 4, bgfx::AttribType::Float)
       .end();
 
-  uint32_t pixelsCount = 800 * 800;
+  this->radius = 10;
+  this->resolution = {800, 800};
+  this->pixelsCount = resolution.x * resolution.y;
   uint32_t pixelsBufferStride = pixelsLayout.getStride();
   uint32_t pixelsBufferSize = pixelsCount * pixelsBufferStride;
 
@@ -91,6 +94,13 @@ Shaders::~Shaders() {
   bgfx::destroy(vbo);
   bgfx::destroy(ibo);
   bgfx::destroy(shaderProgram);
+  bgfx::destroy(posGenProgram);
+  bgfx::destroy(sphProgram);
+  bgfx::destroy(projectileBuffer);
+  bgfx::destroy(pixelsBuffer);
+  bgfx::destroy(u_numPoints);
+  bgfx::destroy(u_radius);
+  bgfx::destroy(u_resolution);
 }
 
 void Shaders::submitShader(bgfx::VertexBufferHandle vbo,
@@ -102,7 +112,8 @@ void Shaders::submitShader(bgfx::VertexBufferHandle vbo,
                            bgfx::DynamicVertexBufferHandle pixelsBuffer,
                            bgfx::UniformHandle u_numPoints,
                            bgfx::UniformHandle u_radius,
-                           bgfx::UniformHandle u_resolution) {
+                           bgfx::UniformHandle u_resolution, float pixelsCount,
+                           float radius, Vec2 resolution) {
 
   //------------------------------------------------------------------------------------
   // Submit shader to render in while loop
@@ -117,6 +128,9 @@ void Shaders::submitShader(bgfx::VertexBufferHandle vbo,
 
   bgfx::setVertexBuffer(0, vbo);
   bgfx::setIndexBuffer(ibo);
+  bgfx::setUniform(u_numPoints, &pixelsCount);
+  bgfx::setUniform(u_radius, &radius);
+  bgfx::setUniform(u_resolution, &resolution);
   bgfx::setBuffer(0, projectileBuffer, bgfx::Access::Read);
   bgfx::setState(BGFX_STATE_DEFAULT);
   bgfx::submit(0, shaderProgram);

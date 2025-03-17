@@ -10,11 +10,12 @@ int main() {
 
   while (!window.shouldClose()) {
     window.pollEvents();
-    mainShader.submitShader(mainShader.vbo, mainShader.ibo,
-                            mainShader.shaderProgram, mainShader.posGenProgram,
-                            mainShader.sphProgram, mainShader.projectileBuffer,
-                            mainShader.pixelsBuffer, mainShader.u_numPoints,
-                            mainShader.u_radius, mainShader.u_resolution);
+    mainShader.submitShader(
+        mainShader.vbo, mainShader.ibo, mainShader.shaderProgram,
+        mainShader.posGenProgram, mainShader.sphProgram,
+        mainShader.projectileBuffer, mainShader.pixelsBuffer,
+        mainShader.u_numPoints, mainShader.u_radius, mainShader.u_resolution,
+        mainShader.pixelsCount, mainShader.radius, mainShader.resolution);
     renderer.renderFrame();
   }
 
