@@ -1,3 +1,4 @@
+#include "buffers/vertexBuffer.hpp"
 #include "renderer/renderer.hpp"
 #include "renderer/shaders.hpp"
 #include "renderer/window.hpp"
@@ -7,6 +8,8 @@ int main() {
   Renderer renderer(window.getNativeWindow(), 1280, 720);
   Shaders mainShader("src/shaders/shader.vertex.bin",
                      "src/shaders/shader.fragment.bin");
+
+  VertexBuffer screenVBO(0, "screenVBO");
 
   while (!window.shouldClose()) {
     window.pollEvents();

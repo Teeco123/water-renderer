@@ -10,8 +10,8 @@ add_subdirectory(lib/bgfx-cmake)
 add_subdirectory(lib/glfw)
 
 # Automatically add all .cpp files in the src directory
-file(GLOB SOURCES src/*.cpp src/renderer/*.cpp src/utils/*.cpp)
-file(GLOB HEADERS src/*.hpp src/renderer/*.hpp src/utils/*.hpp)
+file(GLOB SOURCES src/*.cpp src/renderer/*.cpp src/utils/*.cpp src/buffers/*.cpp)
+file(GLOB HEADERS src/*.hpp src/renderer/*.hpp src/utils/*.hpp src/buffers/*.hpp)
 
 # Add source files
 add_executable(WaterRenderer ${SOURCES})
