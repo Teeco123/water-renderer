@@ -1,4 +1,5 @@
 #include "buffers/computeBuffer.hpp"
+#include "buffers/indexBuffer.hpp"
 #include "buffers/uniformBuffer.hpp"
 #include "buffers/vertexBuffer.hpp"
 #include "renderer/renderer.hpp"
