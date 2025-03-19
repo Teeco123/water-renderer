@@ -4,6 +4,7 @@
 #include "../utils/types.hpp"
 #include <bgfx/bgfx.h>
 #include <string.h>
+#include <string>
 
 class BaseBuffer {
 public:

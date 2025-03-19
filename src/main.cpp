@@ -1,4 +1,5 @@
 #include "buffers/computeBuffer.hpp"
+#include "buffers/uniformBuffer.hpp"
 #include "buffers/vertexBuffer.hpp"
 #include "renderer/renderer.hpp"
 #include "renderer/shaders.hpp"
@@ -9,9 +10,6 @@ int main() {
   Renderer renderer(window.getNativeWindow(), 1280, 720);
   Shaders mainShader("src/shaders/shader.vertex.bin",
                      "src/shaders/shader.fragment.bin");
-
-  VertexBuffer screenVBO(0, "screenVBO");
-  ComputeBuffer projectileBuffer(0, "projectileBuffer", bgfx::Access::Write);
 
   while (!window.shouldClose()) {
     window.pollEvents();
