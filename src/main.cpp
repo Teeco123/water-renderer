@@ -2,6 +2,7 @@
 #include "buffers/indexBuffer.hpp"
 #include "buffers/uniformBuffer.hpp"
 #include "buffers/vertexBuffer.hpp"
+#include "programs/shaderProgram.hpp"
 #include "renderer/renderer.hpp"
 #include "renderer/shaders.hpp"
 #include "renderer/window.hpp"
