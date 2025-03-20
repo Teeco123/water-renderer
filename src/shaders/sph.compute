@@ -51,7 +51,7 @@ void main() {
   uint idy = gl_GlobalInvocationID.y;
   uint id = idy * u_resolution.x + idx;
 
-  vec2 uv = gl_GlobalInvocationID.xy / u_resolution.xy;
+  vec2 uv = gl_GlobalInvocationID.xy / (u_resolution.xy / 4);
 
   float density = CalculateDensity(uv);
   vec4 color = DensityToColor(density);

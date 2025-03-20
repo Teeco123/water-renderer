@@ -68,7 +68,7 @@ Shaders::Shaders(const char *vertexFile, const char *fragmentFile) {
       .add(bgfx::Attrib::Color0, 4, bgfx::AttribType::Float)
       .end();
 
-  uint32_t pixelsCount = 1280 * 720;
+  uint32_t pixelsCount = (1280 * 2) * (720 * 2);
   uint32_t pixelsBufferStride = pixelsLayout.getStride();
   uint32_t pixelsBufferSize = pixelsCount * pixelsBufferStride;
 
@@ -78,7 +78,7 @@ Shaders::Shaders(const char *vertexFile, const char *fragmentFile) {
   //------------------------------------------------------------------------------------
   // Setting uniforms
   this->radius = 50;
-  this->resolution = {1280, 720};
+  this->resolution = {1280 * 4, 720 * 4};
 
   u_numPoints = bgfx::createUniform("u_numPoints", bgfx::UniformType::Vec4);
   u_radius = bgfx::createUniform("u_radius", bgfx::UniformType::Vec4);
@@ -122,7 +122,7 @@ void Shaders::submitShader(
   bgfx::setUniform(u_resolution, &resolution);
   bgfx::setBuffer(0, projectileBuffer, bgfx::Access::ReadWrite);
   bgfx::setBuffer(1, pixelsBuffer, bgfx::Access::ReadWrite);
-  bgfx::dispatch(0, sphProgram, 1280 / 16, 720 / 16, 1);
+  bgfx::dispatch(0, sphProgram, (1280 * 4) / 16, (720 * 4) / 16, 1);
   bgfx::frame();
 
   bgfx::setVertexBuffer(0, vbo);
