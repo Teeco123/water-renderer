@@ -43,14 +43,14 @@ int main() {
   posGenProgram.init();
   sphProgram.init();
 
+  u_numPoints.bind();
+  u_radius.bind();
+  u_resolution.bind();
+  projectileBuffer.bind();
+  posGenProgram.submit();
+
   while (!window.shouldClose()) {
     window.pollEvents();
-
-    u_numPoints.bind();
-    u_radius.bind();
-    u_resolution.bind();
-    projectileBuffer.bind();
-    posGenProgram.submit();
 
     u_numPoints.bind();
     u_radius.bind();
