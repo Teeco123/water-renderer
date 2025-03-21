@@ -1,4 +1,5 @@
 #include "indexBuffer.hpp"
+#include "bgfx/bgfx.h"
 
 IndexBuffer::IndexBuffer(const char *buffName) {
 
@@ -8,7 +9,7 @@ IndexBuffer::IndexBuffer(const char *buffName) {
         1, 2, 3  // Second triangle
     };
 
-    data = bgfx::makeRef(squareIndices, sizeof(squareIndices));
+    data = bgfx::copy(squareIndices, sizeof(squareIndices));
   }
 }
 

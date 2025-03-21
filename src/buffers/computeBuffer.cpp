@@ -11,9 +11,18 @@ ComputeBuffer::ComputeBuffer(uint8_t stageInt, const char *buffName,
 
     uint32_t projectileCount = 1 * 256;
     uint32_t posBufferStride = layout.getStride();
-    uint32_t posBufferSizes = projectileCount * posBufferStride;
+    size = projectileCount * posBufferStride;
 
-    size = bgfx::makeRef(&posBufferSizes, sizeof(posBufferSizes));
+    stage = stageInt;
+  }
+
+  if (strcmp(buffName, "pixelsBuffer") == 0) {
+    layout.begin().add(bgfx::Attrib::Color0, 4, bgfx::AttribType::Float).end();
+
+    uint32_t pixelsCount = 800 * 800;
+    uint32_t pixelsStride = layout.getStride();
+    size = pixelsCount * pixelsStride;
+
     stage = stageInt;
   }
 }

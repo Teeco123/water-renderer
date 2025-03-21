@@ -8,7 +8,7 @@ private:
   bgfx::VertexLayout layout;
   bgfx::DynamicVertexBufferHandle buffer;
   bgfx::Access::Enum access;
-  const bgfx::Memory *size;
+  uint32_t size;
   uint8_t stage;
 
 public:

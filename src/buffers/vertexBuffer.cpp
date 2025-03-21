@@ -10,7 +10,7 @@ VertexBuffer::VertexBuffer(uint8_t streamInt, const char *buffName) {
         .add(bgfx::Attrib::Position, 2, bgfx::AttribType::Float)
         .end();
 
-    data = bgfx::makeRef(squareVertices, sizeof(squareVertices));
+    data = bgfx::copy(squareVertices, sizeof(squareVertices));
     stream = streamInt;
   }
 }
