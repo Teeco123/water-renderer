@@ -15,6 +15,15 @@ float SmoothingKernel(float radius, float dst) {
     return (value * value * value) / volume;
 }
 
+float SmoothingKernelDerivative(float radius, float dst){
+  if(dst >= radius){
+    return 0;
+  }
+  float f = radius * radius - dst * dst;
+  float scale = -24 / (3.14159265359 * pow(radius, 8.0));
+  return scale * dst * f * f;
+}
+
 float Distance2Vectors(vec2 A, vec2 B) {
     return length(A - B);
 }
@@ -34,13 +43,25 @@ float CalculateDensity(vec2 samplePoint) {
     return density;
 }
 
+float DensityToPressure(float density){
+  float densityError = density - 3;
+  float pressure = densityError * 1;
+  return pressure;
+}
+
 vec4 DensityToColor(float density) {
-    vec3 lowDensity = vec3(0.0, 0.0, 0.0);
-    vec3 highDensity = vec3(0.3, 0.75, 1.0);
+    vec3 lowDensity = vec3(0.5,0.0,0.0);
+    vec3 middleDensity = vec3(1.0,1.0,1.0);
+    vec3 highDensity = vec3(0.0,0.0,0.5);
 
     float normalizedDensity = clamp(density / 500, 0.0, 1.0);
+    vec3 color;
 
-    vec3 color = mix(lowDensity, highDensity, normalizedDensity);
+    if(normalizedDensity < 0.5){
+      color = mix(lowDensity, middleDensity, normalizedDensity * 2.0);
+    }else{
+      color = mix(middleDensity, highDensity, (normalizedDensity - 0.5) * 2.0);
+    }
 
     return vec4(color, 1.0);
 }
@@ -54,7 +75,8 @@ void main() {
   vec2 uv = gl_GlobalInvocationID.xy / u_resolution.xy;
 
   float density = CalculateDensity(uv);
-  vec4 color = DensityToColor(density);
+  float pressure = DensityToPressure(density);
+  vec4 color = DensityToColor(pressure);
   u_pixels[id] = color;
 
 }
