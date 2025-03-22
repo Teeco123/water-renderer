@@ -23,9 +23,15 @@ float Distance2Vectors(vec2 A, vec2 B) {
 }
 
 float DensityToPressure(float density){
-  float densityError = density - 1;
-  float pressure = densityError * 0.1;
+  float densityError = density - 3;
+  float pressure = densityError * 0.01;
   return pressure;
+}
+
+float CalculateSharedPressure(float densA, float densB){
+  float pressureA = DensityToPressure(densA);
+  float pressureB = DensityToPressure(densB);
+  return (pressureA + pressureB) / 2;
 }
 
 vec2 CalculatePressureForce(int sampleIndex){
@@ -45,7 +51,8 @@ vec2 CalculatePressureForce(int sampleIndex){
 
     float slope = SmoothingKernelDerivative(normalizedRadius, dst);
     float density = u_densities[particleIndex].x;
-    pressureForce += DensityToPressure(density) * dir * slope * mass / density;
+    float sharedPressure = CalculateSharedPressure(density, u_densities[sampleIndex].x);
+    pressureForce += sharedPressure * dir * slope * mass / density;
   }
   return pressureForce;
 }
@@ -62,21 +69,21 @@ void main() {
   u_particle[idx] += u_velocities[idx] * 0.008;
 
   if(u_particle[idx].x > 1){
-    u_particle[idx].x = 1;
-    u_velocities[idx].x = -u_velocities[idx].x * 0.8;
+    u_particle[idx].x = 0.99;
+    u_velocities[idx].x = -u_velocities[idx].x;
   }
   else if(u_particle[idx].x < -1){
-    u_particle[idx].x = -1;
-    u_velocities[idx].x = -u_velocities[idx].x * 0.8;
+    u_particle[idx].x = -0.99;
+    u_velocities[idx].x = -u_velocities[idx].x;
   }
 
   if(u_particle[idx].y > 1){
-    u_particle[idx].y = 1;
-    u_velocities[idx].y = -u_velocities[idx].y * 0.8;
+    u_particle[idx].y = 0.99;
+    u_velocities[idx].y = -u_velocities[idx].y;
   }
   else if(u_particle[idx].y < -1){
-    u_particle[idx].y = -1;
-    u_velocities[idx].y = -u_velocities[idx].y * 0.8;
+    u_particle[idx].y = -0.99;
+    u_velocities[idx].y = -u_velocities[idx].y;
   }
   
 }
