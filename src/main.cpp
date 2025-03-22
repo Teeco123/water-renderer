@@ -7,6 +7,7 @@
 #include "renderer/renderer.hpp"
 #include "renderer/shaders.hpp"
 #include "renderer/window.hpp"
+#include <cstdio>
 
 int main() {
   Window window(800, 800, "Water Renderer");
@@ -18,6 +19,8 @@ int main() {
   ComputeBuffer particleBuffer(0, "particleBuffer", bgfx::Access::ReadWrite);
   ComputeBuffer pixelsBuffer(1, "pixelsBuffer", bgfx::Access::ReadWrite);
   ComputeBuffer densitiesBuffer(2, "densitiesBuffer", bgfx::Access::ReadWrite);
+  ComputeBuffer velocitiesBuffer(3, "velocitiesBuffer",
+                                 bgfx::Access::ReadWrite);
 
   UniformBuffer u_numPoints("u_numPoints");
   UniformBuffer u_radius("u_radius");
@@ -30,8 +33,7 @@ int main() {
                                1);
   ComputeProgram calcDensity("src/shaders/calcDensity.compute.bin", 256 / 256,
                              1, 1);
-  ComputeProgram sphProgram("src/shaders/sph.compute.bin", 800 / 16, 800 / 16,
-                            1);
+  ComputeProgram sphProgram("src/shaders/sph.compute.bin", 256 / 256, 1, 1);
 
   //------------------------------------------------------------------------------------
   // Init everything
@@ -40,6 +42,7 @@ int main() {
   particleBuffer.init();
   pixelsBuffer.init();
   densitiesBuffer.init();
+  velocitiesBuffer.init();
   u_numPoints.init();
   u_radius.init();
   u_resolution.init();
@@ -74,6 +77,7 @@ int main() {
     particleBuffer.bind();
     densitiesBuffer.bind();
     pixelsBuffer.bind();
+    velocitiesBuffer.bind();
     sphProgram.submit();
 
     vbo.bind();

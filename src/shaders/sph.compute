@@ -3,18 +3,11 @@
 BUFFER_RW(u_particle, vec2, 0);
 BUFFER_RW(u_pixels, vec4, 1);
 BUFFER_RW(u_densities, vec4, 2);
+BUFFER_RW(u_velocities, vec2, 3);
 
 uniform vec4 u_numPoints;
 uniform vec4 u_radius;
 uniform vec4 u_resolution;
-
-float SmoothingKernel(float radius, float dst) {
-    float volume = 3.14159265359 * pow(radius, 8.0) / 4.0;
-    float squared = radius * radius - dst * dst;
-    float value = (squared > 0.0) ? squared : 0.0;
-    
-    return (value * value * value) / volume;
-}
 
 float SmoothingKernelDerivative(float radius, float dst){
   if(dst >= radius){
@@ -29,55 +22,40 @@ float Distance2Vectors(vec2 A, vec2 B) {
     return length(A - B);
 }
 
-float CalculateDensity(vec2 samplePoint) {
-    float density = 0.0;
-    const float mass = 1.0;
-
-    for (int i = 0; i < u_numPoints.x; i++) {
-        vec2 normalizedPoint = (u_particle[i] + 1) / 2;
-        float normalizedRadius = u_radius.x / u_resolution.x;
-
-        float dst = Distance2Vectors(samplePoint, normalizedPoint);
-        float influence = SmoothingKernel(normalizedRadius, dst);
-        density += mass * influence;
-    }
-    return density;
-}
-
 float DensityToPressure(float density){
   float densityError = density - 3;
   float pressure = densityError * 1;
   return pressure;
 }
 
-vec4 DensityToColor(float density) {
-    vec3 lowDensity = vec3(0.5,0.0,0.0);
-    vec3 middleDensity = vec3(1.0,1.0,1.0);
-    vec3 highDensity = vec3(0.0,0.0,0.5);
+vec2 CalculatePressureForce(int sampleIndex){
+  vec2 pressureForce = vec2(0,0);
+  const float mass = 1.0;
 
-    float normalizedDensity = clamp(density / 500, 0.0, 1.0);
-    vec3 color;
+  for(int particleIndex = 0; particleIndex < u_numPoints.x; particleIndex++){
+    if(sampleIndex == particleIndex) continue;
 
-    if(normalizedDensity < 0.5){
-      color = mix(lowDensity, middleDensity, normalizedDensity * 2.0);
-    }else{
-      color = mix(middleDensity, highDensity, (normalizedDensity - 0.5) * 2.0);
-    }
+    vec2 normalizedSample = (u_particle[sampleIndex] + 1) / 2;
+    vec2 normalizedPoint = (u_particle[particleIndex] + 1) / 2;
+    float normalizedRadius = u_radius.x / u_resolution.x;
 
-    return vec4(color, 1.0);
+    vec2 offset = normalizedPoint - normalizedSample;
+    float dst = Distance2Vectors(normalizedPoint, normalizedSample);
+    vec2 dir = offset / dst;
+
+    float slope = SmoothingKernelDerivative(normalizedRadius, dst);
+    float density = u_densities[particleIndex].x;
+    pressureForce += DensityToPressure(density) * dir * slope * mass / density;
+  }
+  return pressureForce;
 }
 
-NUM_THREADS(16, 16, 1)
+NUM_THREADS(256, 1, 1)
 void main() {
   uint idx = gl_GlobalInvocationID.x;
-  uint idy = gl_GlobalInvocationID.y;
-  uint id = idy * u_resolution.x + idx;
 
-  vec2 uv = gl_GlobalInvocationID.xy / u_resolution.xy;
+  vec2 pressureForce = CalculatePressureForce(idx);
+  vec2 pressureAcceleration = pressureForce / u_densities[idx].x;
 
-  float density = CalculateDensity(uv);
-  float pressure = DensityToPressure(density);
-  vec4 color = DensityToColor(pressure);
-  u_pixels[id] = color;
-
+  u_velocities[idx] = pressureAcceleration * 0.008;
 }

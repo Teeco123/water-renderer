@@ -35,6 +35,17 @@ ComputeBuffer::ComputeBuffer(uint8_t stageInt, const char *buffName,
 
     stage = stageInt;
   }
+  if (strcmp(buffName, "velocitiesBuffer") == 0) {
+    layout.begin()
+        .add(bgfx::Attrib::Position, 2, bgfx::AttribType::Float)
+        .end();
+
+    uint32_t count = 1 * 256;
+    uint32_t stride = layout.getStride();
+    size = count * stride;
+
+    stage = stageInt;
+  }
 }
 
 void ComputeBuffer::init() {
