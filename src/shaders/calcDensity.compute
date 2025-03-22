@@ -2,6 +2,7 @@
 
 BUFFER_RW(u_particle, vec2, 0);
 BUFFER_RW(u_densities, vec4, 2);
+BUFFER_RW(u_velocities, vec2, 3);
 
 uniform vec4 u_numPoints;
 uniform vec4 u_radius;
@@ -38,6 +39,8 @@ float CalculateDensity(vec2 samplePoint) {
 NUM_THREADS(256, 1, 1)
 void main() {
   uint idx = gl_GlobalInvocationID.x;
+
+  u_velocities[idx] += vec2(0, -1) * (-9.81 / 250) * 0.008;
 
   float density = CalculateDensity(u_particle[idx]);
   u_densities[idx].x = density;
