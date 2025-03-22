@@ -15,7 +15,7 @@ void main()
     vec4 finalColor = vec4(0.0, 0.0, 0.0, 0.0);
     
     // For each particle
-    for(int i = 0; i < 255; i++) {
+    for(int i = 0; i < u_numPoints.x; i++) {
         vec2 particlePos = (u_particle[i] + 1) / 2;
         
         vec2 screenPos = particlePos * u_resolution.x;
