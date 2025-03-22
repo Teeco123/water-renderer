@@ -12,9 +12,20 @@ uniform vec4 u_resolution;
 
 void main()
 {
-  uint idx = gl_FragCoord.x;
-  uint idy = gl_FragCoord.y;
-  uint id = idy * u_resolution.x + idx;
-  
-	gl_FragColor = u_pixel[id];
+    vec4 finalColor = vec4(0.0, 0.0, 0.0, 0.0);
+    
+    // For each particle
+    for(int i = 0; i < 255; i++) {
+        vec2 particlePos = (u_particle[i] + 1) / 2;
+        
+        vec2 screenPos = particlePos * u_resolution.x;
+        
+        float distance = length(gl_FragCoord.xy - screenPos);
+        
+        if(distance < 2) {
+            finalColor = vec4(1.0, 1.0, 1.0, 1.0);
+        }
+    }
+    
+    gl_FragColor = finalColor;
 }
