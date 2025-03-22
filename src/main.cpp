@@ -29,11 +29,9 @@ int main() {
   ShaderProgram shaderProgram("src/shaders/shader.vertex.bin",
                               "src/shaders/shader.fragment.bin");
 
-  ComputeProgram posGenProgram("src/shaders/posGen.compute.bin", 256 / 256, 1,
-                               1);
-  ComputeProgram calcDensity("src/shaders/calcDensity.compute.bin", 256 / 256,
-                             1, 1);
-  ComputeProgram sphProgram("src/shaders/sph.compute.bin", 256 / 256, 1, 1);
+  ComputeProgram posGenProgram("src/shaders/posGen.compute.bin", 2, 1, 1);
+  ComputeProgram calcDensity("src/shaders/calcDensity.compute.bin", 2, 1, 1);
+  ComputeProgram sphProgram("src/shaders/sph.compute.bin", 2, 1, 1);
 
   //------------------------------------------------------------------------------------
   // Init everything
@@ -69,6 +67,7 @@ int main() {
     u_resolution.bind();
     particleBuffer.bind();
     densitiesBuffer.bind();
+    velocitiesBuffer.bind();
     calcDensity.submit();
 
     u_numPoints.bind();
