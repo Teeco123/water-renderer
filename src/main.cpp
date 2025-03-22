@@ -29,9 +29,9 @@ int main() {
   ShaderProgram shaderProgram("src/shaders/shader.vertex.bin",
                               "src/shaders/shader.fragment.bin");
 
-  ComputeProgram posGenProgram("src/shaders/posGen.compute.bin", 4, 1, 1);
-  ComputeProgram calcDensity("src/shaders/calcDensity.compute.bin", 4, 1, 1);
-  ComputeProgram sphProgram("src/shaders/sph.compute.bin", 4, 1, 1);
+  ComputeProgram posGenProgram("src/shaders/posGen.compute.bin", 2, 1, 1);
+  ComputeProgram calcDensity("src/shaders/calcDensity.compute.bin", 2, 1, 1);
+  ComputeProgram sphProgram("src/shaders/sph.compute.bin", 2, 1, 1);
 
   //------------------------------------------------------------------------------------
   // Init everything

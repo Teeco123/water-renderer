@@ -9,7 +9,7 @@ ComputeBuffer::ComputeBuffer(uint8_t stageInt, const char *buffName,
         .add(bgfx::Attrib::Position, 2, bgfx::AttribType::Float)
         .end();
 
-    uint32_t projectileCount = 1 * 256;
+    uint32_t projectileCount = 2 * 256;
     uint32_t posBufferStride = layout.getStride();
     size = projectileCount * posBufferStride;
 
@@ -29,7 +29,7 @@ ComputeBuffer::ComputeBuffer(uint8_t stageInt, const char *buffName,
   if (strcmp(buffName, "densitiesBuffer") == 0) {
     layout.begin().add(bgfx::Attrib::Color0, 1, bgfx::AttribType::Float).end();
 
-    uint32_t count = 1 * 256;
+    uint32_t count = 2 * 256;
     uint32_t stride = layout.getStride();
     size = count * stride;
 
@@ -40,7 +40,7 @@ ComputeBuffer::ComputeBuffer(uint8_t stageInt, const char *buffName,
         .add(bgfx::Attrib::Position, 2, bgfx::AttribType::Float)
         .end();
 
-    uint32_t count = 1 * 256;
+    uint32_t count = 2 * 256;
     uint32_t stride = layout.getStride();
     size = count * stride;
 
