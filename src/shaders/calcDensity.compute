@@ -24,10 +24,11 @@ float CalculateDensity(vec2 samplePoint) {
     const float mass = 1.0;
 
     for (int i = 0; i < u_numPoints.x; i++) {
+        vec2 normalizedSample = (samplePoint + 1) / 2;
         vec2 normalizedPoint = (u_particle[i] + 1) / 2;
         float normalizedRadius = u_radius.x / u_resolution.x;
 
-        float dst = Distance2Vectors(samplePoint, normalizedPoint);
+        float dst = Distance2Vectors(normalizedSample, normalizedPoint);
         float influence = SmoothingKernel(normalizedRadius, dst);
         density += mass * influence;
     }

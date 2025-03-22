@@ -3,7 +3,7 @@
 ComputeBuffer::ComputeBuffer(uint8_t stageInt, const char *buffName,
                              bgfx::Access::Enum access) {
 
-  if (strcmp(buffName, "projectileBuffer") == 0) {
+  if (strcmp(buffName, "particleBuffer") == 0) {
 
     layout.begin()
         .add(bgfx::Attrib::Position, 2, bgfx::AttribType::Float)

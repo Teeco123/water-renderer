@@ -15,8 +15,7 @@ int main() {
   VertexBuffer vbo(0, "screenVBO");
   IndexBuffer ibo("screenIBO");
 
-  ComputeBuffer projectileBuffer(0, "projectileBuffer",
-                                 bgfx::Access::ReadWrite);
+  ComputeBuffer particleBuffer(0, "particleBuffer", bgfx::Access::ReadWrite);
   ComputeBuffer pixelsBuffer(1, "pixelsBuffer", bgfx::Access::ReadWrite);
   ComputeBuffer densitiesBuffer(2, "densitiesBuffer", bgfx::Access::ReadWrite);
 
@@ -34,10 +33,11 @@ int main() {
   ComputeProgram sphProgram("src/shaders/sph.compute.bin", 800 / 16, 800 / 16,
                             1);
 
-  // Inits
+  //------------------------------------------------------------------------------------
+  // Init everything
   vbo.init();
   ibo.init();
-  projectileBuffer.init();
+  particleBuffer.init();
   pixelsBuffer.init();
   densitiesBuffer.init();
   u_numPoints.init();
@@ -48,26 +48,30 @@ int main() {
   calcDensity.init();
   sphProgram.init();
 
+  //------------------------------------------------------------------------------------
+  // Generate positions of particles
   u_numPoints.bind();
   u_radius.bind();
   u_resolution.bind();
-  projectileBuffer.bind();
+  particleBuffer.bind();
   posGenProgram.submit();
 
   while (!window.shouldClose()) {
     window.pollEvents();
 
+    //------------------------------------------------------------------------------------
+    // Calculate cached densities of particle positions
     u_numPoints.bind();
     u_radius.bind();
     u_resolution.bind();
-    projectileBuffer.bind();
+    particleBuffer.bind();
     densitiesBuffer.bind();
     calcDensity.submit();
 
     u_numPoints.bind();
     u_radius.bind();
     u_resolution.bind();
-    projectileBuffer.bind();
+    particleBuffer.bind();
     densitiesBuffer.bind();
     pixelsBuffer.bind();
     sphProgram.submit();
@@ -77,7 +81,7 @@ int main() {
     u_numPoints.bind();
     u_radius.bind();
     u_resolution.bind();
-    projectileBuffer.bind();
+    particleBuffer.bind();
     pixelsBuffer.bind();
     shaderProgram.submit();
 
