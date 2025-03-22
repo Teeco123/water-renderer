@@ -18,6 +18,7 @@ int main() {
   ComputeBuffer projectileBuffer(0, "projectileBuffer",
                                  bgfx::Access::ReadWrite);
   ComputeBuffer pixelsBuffer(1, "pixelsBuffer", bgfx::Access::ReadWrite);
+  ComputeBuffer densitiesBuffer(2, "densitiesBuffer", bgfx::Access::ReadWrite);
 
   UniformBuffer u_numPoints("u_numPoints");
   UniformBuffer u_radius("u_radius");
@@ -28,6 +29,8 @@ int main() {
 
   ComputeProgram posGenProgram("src/shaders/posGen.compute.bin", 256 / 256, 1,
                                1);
+  ComputeProgram calcDensity("src/shaders/calcDensity.compute.bin", 256 / 256,
+                             1, 1);
   ComputeProgram sphProgram("src/shaders/sph.compute.bin", 800 / 16, 800 / 16,
                             1);
 
@@ -36,11 +39,13 @@ int main() {
   ibo.init();
   projectileBuffer.init();
   pixelsBuffer.init();
+  densitiesBuffer.init();
   u_numPoints.init();
   u_radius.init();
   u_resolution.init();
   shaderProgram.init();
   posGenProgram.init();
+  calcDensity.init();
   sphProgram.init();
 
   u_numPoints.bind();
@@ -56,6 +61,14 @@ int main() {
     u_radius.bind();
     u_resolution.bind();
     projectileBuffer.bind();
+    densitiesBuffer.bind();
+    calcDensity.submit();
+
+    u_numPoints.bind();
+    u_radius.bind();
+    u_resolution.bind();
+    projectileBuffer.bind();
+    densitiesBuffer.bind();
     pixelsBuffer.bind();
     sphProgram.submit();
 
