@@ -32,6 +32,7 @@ int main() {
   ComputeProgram posGenProgram("src/shaders/posGen.compute.bin", 2, 1, 1);
   ComputeProgram step1Program("src/shaders/step1.compute.bin", 2, 1, 1);
   ComputeProgram step2Program("src/shaders/step2.compute.bin", 2, 1, 1);
+  ComputeProgram step3Program("src/shaders/step3.compute.bin", 2, 1, 1);
 
   //------------------------------------------------------------------------------------
   // Init everything
@@ -48,6 +49,7 @@ int main() {
   posGenProgram.init();
   step1Program.init();
   step2Program.init();
+  step3Program.init();
 
   //------------------------------------------------------------------------------------
   // Generate positions of particles
@@ -70,14 +72,25 @@ int main() {
     velocitiesBuffer.bind();
     step1Program.submit();
 
+    //------------------------------------------------------------------------------------
+    // Calculate velocity based on pressure force of particle
     u_numPoints.bind();
     u_radius.bind();
     u_resolution.bind();
     particleBuffer.bind();
     densitiesBuffer.bind();
-    pixelsBuffer.bind();
     velocitiesBuffer.bind();
     step2Program.submit();
+
+    //------------------------------------------------------------------------------------
+    // Update positions and handle boundaries colistions
+    u_numPoints.bind();
+    u_radius.bind();
+    u_resolution.bind();
+    particleBuffer.bind();
+    densitiesBuffer.bind();
+    velocitiesBuffer.bind();
+    step3Program.submit();
 
     vbo.bind();
     ibo.bind();
