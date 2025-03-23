@@ -1,7 +1,6 @@
 #include "bgfx_compute.sh"
 
 BUFFER_RW(u_particle, vec2, 0);
-BUFFER_RW(u_pixels, vec4, 1);
 BUFFER_RW(u_densities, vec4, 2);
 BUFFER_RW(u_velocities, vec2, 3);
 
@@ -24,7 +23,7 @@ float Distance2Vectors(vec2 A, vec2 B) {
 
 float DensityToPressure(float density){
   float densityError = density - 100;
-  float pressure = densityError * 0.001;
+  float pressure = densityError * 2;
   return pressure;
 }
 
@@ -63,5 +62,5 @@ void main() {
 
   vec2 pressureForce = CalculatePressureForce(idx);
   vec2 pressureAcceleration = pressureForce / u_densities[idx].x;
-  u_velocities[idx] += pressureAcceleration * 0.008;  
+  u_velocities[idx] = pressureAcceleration * 0.008;  
 }
