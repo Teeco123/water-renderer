@@ -23,8 +23,8 @@ float Distance2Vectors(vec2 A, vec2 B) {
 }
 
 float DensityToPressure(float density){
-  float densityError = density - 3;
-  float pressure = densityError * 0.01;
+  float densityError = density - 100;
+  float pressure = densityError * 0.5;
   return pressure;
 }
 
@@ -69,21 +69,21 @@ void main() {
   u_particle[idx] += u_velocities[idx] * 0.008;
 
   if(u_particle[idx].x > 1){
-    u_particle[idx].x = 0.99;
-    u_velocities[idx].x = -u_velocities[idx].x;
+    u_particle[idx].x = 0.999;
+    u_velocities[idx].x *= -1 * 0.95;
   }
   else if(u_particle[idx].x < -1){
-    u_particle[idx].x = -0.99;
-    u_velocities[idx].x = -u_velocities[idx].x;
+    u_particle[idx].x = -0.999;
+    u_velocities[idx].x *= -1 * 0.95;
   }
 
   if(u_particle[idx].y > 1){
-    u_particle[idx].y = 0.99;
-    u_velocities[idx].y = -u_velocities[idx].y;
+    u_particle[idx].y = 0.999;
+    u_velocities[idx].y *= -1 * 0.95;
   }
   else if(u_particle[idx].y < -1){
-    u_particle[idx].y = -0.99;
-    u_velocities[idx].y = -u_velocities[idx].y;
+    u_particle[idx].y = -0.999;
+    u_velocities[idx].y *= -1 * 0.95;
   }
   
 }
