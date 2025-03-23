@@ -40,7 +40,5 @@ NUM_THREADS(256, 1, 1)
 void main() {
   uint idx = gl_GlobalInvocationID.x;
 
-  float density = CalculateDensity(u_particle[idx]);
-  u_densities[idx].x = density;
-
+  u_densities[idx].x = CalculateDensity(u_particle[idx]);
 }

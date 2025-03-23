@@ -30,7 +30,7 @@ int main() {
                               "src/shaders/shader.fragment.bin");
 
   ComputeProgram posGenProgram("src/shaders/posGen.compute.bin", 2, 1, 1);
-  ComputeProgram calcDensity("src/shaders/calcDensity.compute.bin", 2, 1, 1);
+  ComputeProgram step1Program("src/shaders/step1.compute.bin", 2, 1, 1);
   ComputeProgram sphProgram("src/shaders/sph.compute.bin", 2, 1, 1);
 
   //------------------------------------------------------------------------------------
@@ -46,7 +46,7 @@ int main() {
   u_resolution.init();
   shaderProgram.init();
   posGenProgram.init();
-  calcDensity.init();
+  step1Program.init();
   sphProgram.init();
 
   //------------------------------------------------------------------------------------
@@ -68,7 +68,7 @@ int main() {
     particleBuffer.bind();
     densitiesBuffer.bind();
     velocitiesBuffer.bind();
-    calcDensity.submit();
+    step1Program.submit();
 
     u_numPoints.bind();
     u_radius.bind();
