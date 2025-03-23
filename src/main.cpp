@@ -31,7 +31,7 @@ int main() {
 
   ComputeProgram posGenProgram("src/shaders/posGen.compute.bin", 2, 1, 1);
   ComputeProgram step1Program("src/shaders/step1.compute.bin", 2, 1, 1);
-  ComputeProgram sphProgram("src/shaders/sph.compute.bin", 2, 1, 1);
+  ComputeProgram step2Program("src/shaders/step2.compute.bin", 2, 1, 1);
 
   //------------------------------------------------------------------------------------
   // Init everything
@@ -47,7 +47,7 @@ int main() {
   shaderProgram.init();
   posGenProgram.init();
   step1Program.init();
-  sphProgram.init();
+  step2Program.init();
 
   //------------------------------------------------------------------------------------
   // Generate positions of particles
@@ -77,7 +77,7 @@ int main() {
     densitiesBuffer.bind();
     pixelsBuffer.bind();
     velocitiesBuffer.bind();
-    sphProgram.submit();
+    step2Program.submit();
 
     vbo.bind();
     ibo.bind();

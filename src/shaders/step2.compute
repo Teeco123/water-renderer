@@ -24,7 +24,7 @@ float Distance2Vectors(vec2 A, vec2 B) {
 
 float DensityToPressure(float density){
   float densityError = density - 100;
-  float pressure = densityError * 0.5;
+  float pressure = densityError * 0.001;
   return pressure;
 }
 
@@ -63,27 +63,5 @@ void main() {
 
   vec2 pressureForce = CalculatePressureForce(idx);
   vec2 pressureAcceleration = pressureForce / u_densities[idx].x;
-
-  u_velocities[idx] += pressureAcceleration * 0.008;
-
-  u_particle[idx] += u_velocities[idx] * 0.008;
-
-  if(u_particle[idx].x > 1){
-    u_particle[idx].x = 0.999;
-    u_velocities[idx].x *= -1 * 0.95;
-  }
-  else if(u_particle[idx].x < -1){
-    u_particle[idx].x = -0.999;
-    u_velocities[idx].x *= -1 * 0.95;
-  }
-
-  if(u_particle[idx].y > 1){
-    u_particle[idx].y = 0.999;
-    u_velocities[idx].y *= -1 * 0.95;
-  }
-  else if(u_particle[idx].y < -1){
-    u_particle[idx].y = -0.999;
-    u_velocities[idx].y *= -1 * 0.95;
-  }
-  
+  u_velocities[idx] += pressureAcceleration * 0.008;  
 }
