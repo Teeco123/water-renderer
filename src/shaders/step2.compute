@@ -23,7 +23,7 @@ float Distance2Vectors(vec2 A, vec2 B) {
 
 float DensityToPressure(float density){
   float densityError = density - 100;
-  float pressure = densityError * 2;
+  float pressure = densityError * 2 / 100;
   return pressure;
 }
 
@@ -62,5 +62,5 @@ void main() {
 
   vec2 pressureForce = CalculatePressureForce(idx);
   vec2 pressureAcceleration = pressureForce / u_densities[idx].x;
-  u_velocities[idx] = pressureAcceleration * 0.008;  
+  u_velocities[idx] += pressureAcceleration * 0.008;  
 }

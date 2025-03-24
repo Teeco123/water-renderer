@@ -7,7 +7,6 @@
 #include "renderer/renderer.hpp"
 #include "renderer/shaders.hpp"
 #include "renderer/window.hpp"
-#include <cstdio>
 
 int main() {
   Window window(800, 800, "Water Renderer");
