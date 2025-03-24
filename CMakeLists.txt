@@ -9,6 +9,8 @@ set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 add_subdirectory(lib/bgfx-cmake)
 add_subdirectory(lib/glfw)
 
+include_directories(${CMAKE_SOURCE_DIR}/lib/metal-cpp)
+
 # Automatically add all .cpp files in the src directory
 file(GLOB SOURCES src/*.cpp src/renderer/*.cpp src/utils/*.cpp src/buffers/*.cpp src/programs/*.cpp)
 file(GLOB HEADERS src/*.hpp src/renderer/*.hpp src/utils/*.hpp src/buffers/*.hpp src/buffers/*.hpp)
@@ -17,7 +19,11 @@ file(GLOB HEADERS src/*.hpp src/renderer/*.hpp src/utils/*.hpp src/buffers/*.hpp
 add_executable(WaterRenderer ${SOURCES})
 
 # Link raylib and raygui to the project
-target_link_libraries(WaterRenderer bgfx glfw bx)
+target_link_libraries(WaterRenderer bgfx glfw bx
+        "-framework Metal"
+        "-framework Foundation"
+        "-framework QuartzCore"
+)
 
 # Set the output directory for the executable to the "bin" folder
 set_target_properties(WaterRenderer PROPERTIES

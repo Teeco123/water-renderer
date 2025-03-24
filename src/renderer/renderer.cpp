@@ -6,9 +6,15 @@
 #define GLFW_EXPOSE_NATIVE_WIN32
 #elif BX_PLATFORM_OSX
 #define GLFW_EXPOSE_NATIVE_COCOA
+#define NS_PRIVATE_IMPLEMENTATION
+#define MTL_PRIVATE_IMPLEMENTATION
+#define CA_PRIVATE_IMPLEMENTATION
 #endif
 
+#include "Foundation/Foundation.hpp"
 #include "GLFW/glfw3native.h"
+#include "Metal/Metal.hpp"
+#include "QuartzCore/QuartzCore.hpp"
 
 Renderer::Renderer(GLFWwindow *window, int width, int height)
     : width(width), height(height) {
