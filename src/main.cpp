@@ -61,10 +61,24 @@ int main() {
   u_radius.bindUniform(gui);
   u_resolution.bindUniform(gui);
   particleBuffer.bind();
+  densitiesBuffer.bind();
+  velocitiesBuffer.bind();
   posGenProgram.submit();
 
   while (!window.shouldClose()) {
     window.pollEvents();
+
+    //------------------------------------------------------------------------------------
+    // Re-generate positions of particles
+    if (gui.reset) {
+      u_numPoints.bindUniform(gui);
+      u_radius.bindUniform(gui);
+      u_resolution.bindUniform(gui);
+      particleBuffer.bind();
+      densitiesBuffer.bind();
+      velocitiesBuffer.bind();
+      posGenProgram.submit();
+    }
 
     //------------------------------------------------------------------------------------
     // Calculate cached densities of particle positions

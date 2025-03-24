@@ -2,6 +2,8 @@
 
 
 BUFFER_RW(u_particle, vec2, 0);
+BUFFER_RW(u_densities, vec4, 2);
+BUFFER_RW(u_velocities, vec2, 3);
 
 
 uint rotl(uint _x, uint _r)
@@ -56,4 +58,6 @@ void main() {
   uint idy = gl_GlobalInvocationID.y;
 
   u_particle[idx] = randomVec2Points(idx,idy);
+  u_densities[idx].x = 0;
+  u_velocities[idx] = vec2(0,0);
 }

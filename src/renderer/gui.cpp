@@ -23,6 +23,12 @@ void Gui::render() {
                ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoResize);
   ImGui::SliderFloat("SPH Radius", &radius, 1.0f, 200.0f);
   ImGui::SliderInt("Number of particles", &numParticles, 1, 10);
+  if (ImGui::Button("Reset")) {
+    reset = true;
+  } else {
+    reset = false;
+  }
+
   ImGui::End();
 
   ImGui::Render();

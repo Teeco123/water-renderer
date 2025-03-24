@@ -16,6 +16,7 @@ public:
   int resX, resY;
   int numParticles = 3;
   float radius = 1.0f;
+  bool reset = false;
 };
 
 #endif
