@@ -4,13 +4,14 @@
 #include "buffers/vertexBuffer.hpp"
 #include "programs/computeProgram.hpp"
 #include "programs/shaderProgram.hpp"
+#include "renderer/gui.hpp"
 #include "renderer/renderer.hpp"
-#include "renderer/shaders.hpp"
 #include "renderer/window.hpp"
 
 int main() {
   Window window(1000, 1000, "Water Renderer");
   Renderer renderer(window.getNativeWindow(), 2000, 2000);
+  Gui gui(window.getNativeWindow());
 
   VertexBuffer vbo(0, "screenVBO");
   IndexBuffer ibo("screenIBO");
@@ -60,6 +61,8 @@ int main() {
 
   while (!window.shouldClose()) {
     window.pollEvents();
+
+    gui.render();
 
     //------------------------------------------------------------------------------------
     // Calculate cached densities of particle positions
