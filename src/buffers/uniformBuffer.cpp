@@ -14,6 +14,10 @@ UniformBuffer::UniformBuffer(const char *buffName) {
     uniformName = buffName;
     type = bgfx::UniformType::Vec4;
   }
+  if (strcmp(buffName, "u_particleSize") == 0) {
+    uniformName = buffName;
+    type = bgfx::UniformType::Vec4;
+  }
 }
 
 void UniformBuffer::init() {
@@ -31,6 +35,9 @@ void UniformBuffer::bindUniform(const Gui &gui) {
   }
   if (strcmp(uniformName.c_str(), "u_resolution") == 0) {
     data = {2000, 2000, 0, 0};
+  }
+  if (strcmp(uniformName.c_str(), "u_particleSize") == 0) {
+    data = {gui.particleSize, 0, 0, 0};
   }
   bgfx::setUniform(buffer, &data);
 }

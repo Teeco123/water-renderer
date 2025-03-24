@@ -9,6 +9,7 @@ BUFFER_RW(u_pixel,vec4,1);
 uniform vec4 u_numParticles;
 uniform vec4 u_radius;
 uniform vec4 u_resolution;
+uniform vec4 u_particleSize;
 
 void main()
 {
@@ -22,7 +23,7 @@ void main()
         
         float distance = length(gl_FragCoord.xy - screenPos);
         
-        if(distance < 2) {
+        if(distance < u_particleSize.x) {
             finalColor = vec4(1.0, 1.0, 1.0, 1.0);
         }
     }
