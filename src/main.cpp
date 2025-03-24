@@ -53,9 +53,9 @@ int main() {
 
   //------------------------------------------------------------------------------------
   // Generate positions of particles
-  u_numPoints.bind();
-  u_radius.bind();
-  u_resolution.bind();
+  u_numPoints.bindUniform(gui);
+  u_radius.bindUniform(gui);
+  u_resolution.bindUniform(gui);
   particleBuffer.bind();
   posGenProgram.submit();
 
@@ -66,9 +66,9 @@ int main() {
 
     //------------------------------------------------------------------------------------
     // Calculate cached densities of particle positions
-    u_numPoints.bind();
-    u_radius.bind();
-    u_resolution.bind();
+    u_numPoints.bindUniform(gui);
+    u_radius.bindUniform(gui);
+    u_resolution.bindUniform(gui);
     particleBuffer.bind();
     densitiesBuffer.bind();
     velocitiesBuffer.bind();
@@ -76,9 +76,9 @@ int main() {
 
     //------------------------------------------------------------------------------------
     // Calculate velocity based on pressure force of particle
-    u_numPoints.bind();
-    u_radius.bind();
-    u_resolution.bind();
+    u_numPoints.bindUniform(gui);
+    u_radius.bindUniform(gui);
+    u_resolution.bindUniform(gui);
     particleBuffer.bind();
     densitiesBuffer.bind();
     velocitiesBuffer.bind();
@@ -86,9 +86,9 @@ int main() {
 
     //------------------------------------------------------------------------------------
     // Update positions and handle boundaries colistions
-    u_numPoints.bind();
-    u_radius.bind();
-    u_resolution.bind();
+    u_numPoints.bindUniform(gui);
+    u_radius.bindUniform(gui);
+    u_resolution.bindUniform(gui);
     particleBuffer.bind();
     densitiesBuffer.bind();
     velocitiesBuffer.bind();
@@ -96,9 +96,9 @@ int main() {
 
     vbo.bind();
     ibo.bind();
-    u_numPoints.bind();
-    u_radius.bind();
-    u_resolution.bind();
+    u_numPoints.bindUniform(gui);
+    u_radius.bindUniform(gui);
+    u_resolution.bindUniform(gui);
     particleBuffer.bind();
     pixelsBuffer.bind();
     shaderProgram.submit();

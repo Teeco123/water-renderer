@@ -2,6 +2,7 @@
 #define UNIFORM_BUFFER_HPP
 
 #include "baseBuffer.hpp"
+#include "gui.hpp"
 
 class UniformBuffer : public BaseBuffer {
 private:
@@ -15,6 +16,7 @@ public:
   void init() override;
   void bind() override;
   void destroy() override;
+  void bindUniform(const Gui &gui);
 
   bgfx::UniformHandle Get() const;
 

@@ -12,6 +12,10 @@ public:
   ~Gui();
 
   void render();
+
+  int resX, resY;
+  int numParticles;
+  float radius = 1.0f;
 };
 
 #endif

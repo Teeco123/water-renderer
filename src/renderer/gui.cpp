@@ -1,8 +1,5 @@
 #include "gui.hpp"
-
 #include "imgui.h"
-#include "imgui_impl_bgfx.hpp"
-#include "imgui_impl_glfw.h"
 
 Gui::Gui(GLFWwindow *window) {
   ImGui::CreateContext();
@@ -24,6 +21,7 @@ void Gui::render() {
 
   ImGui::Begin("Settings", 0,
                ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoResize);
+  ImGui::SliderFloat("SPH Radius", &radius, 1.0f, 200.0f);
   ImGui::End();
 
   ImGui::Render();
