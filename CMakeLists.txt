@@ -10,13 +10,18 @@ add_subdirectory(lib/bgfx-cmake)
 add_subdirectory(lib/glfw)
 
 include_directories(${CMAKE_SOURCE_DIR}/lib/metal-cpp)
+include_directories(${CMAKE_SOURCE_DIR}/lib/imgui)
+include_directories(${CMAKE_SOURCE_DIR}/lib/imgui/backends)
+include_directories(${CMAKE_SOURCE_DIR}/src/renderer)
+include_directories(${CMAKE_SOURCE_DIR}/src/shaders)
 
 # Automatically add all .cpp files in the src directory
 file(GLOB SOURCES src/*.cpp src/renderer/*.cpp src/utils/*.cpp src/buffers/*.cpp src/programs/*.cpp)
 file(GLOB HEADERS src/*.hpp src/renderer/*.hpp src/utils/*.hpp src/buffers/*.hpp src/buffers/*.hpp)
+file(GLOB IMGUI lib/imgui/*.cpp lib/imgui/backends/imgui_impl_glfw.cpp lib/imgui/backends/imgui_impl_bgfx.cpp)
 
 # Add source files
-add_executable(WaterRenderer ${SOURCES})
+add_executable(WaterRenderer ${SOURCES} ${IMGUI})
 
 # Link raylib and raygui to the project
 target_link_libraries(WaterRenderer bgfx glfw bx
