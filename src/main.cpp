@@ -29,10 +29,14 @@ int main() {
   ShaderProgram shaderProgram("src/shaders/shader.vertex.bin",
                               "src/shaders/shader.fragment.bin");
 
-  ComputeProgram posGenProgram("src/shaders/posGen.compute.bin", 2, 1, 1);
-  ComputeProgram step1Program("src/shaders/step1.compute.bin", 2, 1, 1);
-  ComputeProgram step2Program("src/shaders/step2.compute.bin", 2, 1, 1);
-  ComputeProgram step3Program("src/shaders/step3.compute.bin", 2, 1, 1);
+  ComputeProgram posGenProgram("src/shaders/posGen.compute.bin",
+                               gui.numParticles, 1, 1);
+  ComputeProgram step1Program("src/shaders/step1.compute.bin", gui.numParticles,
+                              1, 1);
+  ComputeProgram step2Program("src/shaders/step2.compute.bin", gui.numParticles,
+                              1, 1);
+  ComputeProgram step3Program("src/shaders/step3.compute.bin", gui.numParticles,
+                              1, 1);
 
   //------------------------------------------------------------------------------------
   // Init everything

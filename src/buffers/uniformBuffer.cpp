@@ -24,7 +24,7 @@ void UniformBuffer::bind() {}
 
 void UniformBuffer::bindUniform(const Gui &gui) {
   if (strcmp(uniformName.c_str(), "u_numPoints") == 0) {
-    data = {2 * 256, 0, 0, 0};
+    data = {(float)gui.numParticles * 256, 0, 0, 0};
   }
   if (strcmp(uniformName.c_str(), "u_radius") == 0) {
     data = {gui.radius, 0, 0, 0};

@@ -14,7 +14,7 @@ public:
   void render();
 
   int resX, resY;
-  int numParticles;
+  int numParticles = 3;
   float radius = 1.0f;
 };
 
