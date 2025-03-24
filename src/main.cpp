@@ -9,8 +9,8 @@
 #include "renderer/window.hpp"
 
 int main() {
-  Window window(800, 800, "Water Renderer");
-  Renderer renderer(window.getNativeWindow(), 800, 800);
+  Window window(1000, 1000, "Water Renderer");
+  Renderer renderer(window.getNativeWindow(), 2000, 2000);
 
   VertexBuffer vbo(0, "screenVBO");
   IndexBuffer ibo("screenIBO");

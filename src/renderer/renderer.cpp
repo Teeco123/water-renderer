@@ -49,7 +49,11 @@ void Renderer::renderFrame() {
   ImGui_ImplGlfw_NewFrame();
 
   ImGui::NewFrame();
-  ImGui::ShowDemoWindow();
+
+  ImGui::Begin("Settings", 0,
+               ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoResize);
+  ImGui::End();
+
   ImGui::Render();
   ImGui_Implbgfx_RenderDrawLists(ImGui::GetDrawData());
 

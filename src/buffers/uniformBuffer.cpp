@@ -15,7 +15,7 @@ UniformBuffer::UniformBuffer(const char *buffName) {
   if (strcmp(buffName, "u_resolution") == 0) {
     uniformName = buffName;
     type = bgfx::UniformType::Vec4;
-    data = {800, 800, 0, 0};
+    data = {2000, 2000, 0, 0};
   }
 }
 
