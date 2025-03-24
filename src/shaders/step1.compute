@@ -4,7 +4,7 @@ BUFFER_RW(u_particle, vec2, 0);
 BUFFER_RW(u_densities, vec4, 2);
 BUFFER_RW(u_velocities, vec2, 3);
 
-uniform vec4 u_numPoints;
+uniform vec4 u_numParticles;
 uniform vec4 u_radius;
 uniform vec4 u_resolution;
 
@@ -24,7 +24,7 @@ float CalculateDensity(vec2 samplePoint) {
     float density = 0.0;
     const float mass = 1.0;
 
-    for (int i = 0; i < u_numPoints.x; i++) {
+    for (int i = 0; i < u_numParticles.x; i++) {
         vec2 normalizedSample = (samplePoint + 1) / 2;
         vec2 normalizedPoint = (u_particle[i] + 1) / 2;
         float normalizedRadius = u_radius.x / u_resolution.x;

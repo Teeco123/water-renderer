@@ -22,7 +22,7 @@ int main() {
   ComputeBuffer velocitiesBuffer(3, "velocitiesBuffer",
                                  bgfx::Access::ReadWrite);
 
-  UniformBuffer u_numPoints("u_numPoints");
+  UniformBuffer u_numPoints("u_numParticles");
   UniformBuffer u_radius("u_radius");
   UniformBuffer u_resolution("u_resolution");
 

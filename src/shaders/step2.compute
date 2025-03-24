@@ -4,7 +4,7 @@ BUFFER_RW(u_particle, vec2, 0);
 BUFFER_RW(u_densities, vec4, 2);
 BUFFER_RW(u_velocities, vec2, 3);
 
-uniform vec4 u_numPoints;
+uniform vec4 u_numParticles;
 uniform vec4 u_radius;
 uniform vec4 u_resolution;
 
@@ -37,7 +37,7 @@ vec2 CalculatePressureForce(int sampleIndex){
   vec2 pressureForce = vec2(0,0);
   const float mass = 1.0;
 
-  for(int particleIndex = 0; particleIndex < u_numPoints.x; particleIndex++){
+  for(int particleIndex = 0; particleIndex < u_numParticles.x; particleIndex++){
     if(sampleIndex == particleIndex) continue;
 
     vec2 normalizedSample = (u_particle[sampleIndex] + 1) / 2;

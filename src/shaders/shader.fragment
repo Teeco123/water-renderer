@@ -6,7 +6,7 @@ $input v_color0
 BUFFER_RW(u_particle, vec2, 0);
 BUFFER_RW(u_pixel,vec4,1);
 
-uniform vec4 u_numPoints;
+uniform vec4 u_numParticles;
 uniform vec4 u_radius;
 uniform vec4 u_resolution;
 
@@ -15,7 +15,7 @@ void main()
     vec4 finalColor = vec4(0.0, 0.0, 0.0, 0.0);
     
     // For each particle
-    for(int i = 0; i < u_numPoints.x; i++) {
+    for(int i = 0; i < u_numParticles.x; i++) {
         vec2 particlePos = (u_particle[i] + 1) / 2;
         
         vec2 screenPos = particlePos * u_resolution.x;
