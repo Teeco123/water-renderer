@@ -62,8 +62,6 @@ int main() {
   while (!window.shouldClose()) {
     window.pollEvents();
 
-    gui.render();
-
     //------------------------------------------------------------------------------------
     // Calculate cached densities of particle positions
     u_numPoints.bindUniform(gui);
@@ -102,6 +100,8 @@ int main() {
     particleBuffer.bind();
     pixelsBuffer.bind();
     shaderProgram.submit();
+
+    gui.render();
 
     renderer.renderFrame();
   }
