@@ -29,6 +29,7 @@ int main() {
   UniformBuffer u_randomSeed("u_randomSeed");
   UniformBuffer u_pressureMultiplier("u_pressureMultiplier");
   UniformBuffer u_particleColor("u_particleColor");
+  UniformBuffer u_targetPressure("u_targetPressure");
 
   ShaderProgram shaderProgram("src/shaders/shader.vertex.bin",
                               "src/shaders/shader.fragment.bin");
@@ -85,6 +86,7 @@ int main() {
     u_radius.bindUniform(gui);
     u_resolution.bindUniform(gui);
     u_pressureMultiplier.bindUniform(gui);
+    u_targetPressure.bindUniform(gui);
     particleBuffer.bind();
     densitiesBuffer.bind();
     velocitiesBuffer.bind();

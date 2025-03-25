@@ -19,6 +19,7 @@ public:
   float radius = 1.0f;
   float particleSize = 1.0f;
   float pressureMultiplier = 0.01f;
+  float targetPressure = 1.0f;
   Vec4 particleColor = {1, 1, 1, 1};
   int randomSeed = 1;
   bool reset = false;

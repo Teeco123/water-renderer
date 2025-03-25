@@ -8,6 +8,7 @@ uniform vec4 u_numParticles;
 uniform vec4 u_radius;
 uniform vec4 u_resolution;
 uniform vec4 u_pressureMultiplier;
+uniform vec4 u_targetPressure;
 
 float SmoothingKernelDerivative(float radius, float dst){
   if(dst >= radius){
@@ -23,7 +24,7 @@ float Distance2Vectors(vec2 A, vec2 B) {
 }
 
 float DensityToPressure(float density){
-  float densityError = density - 100;
+  float densityError = density - u_targetPressure.x;
   float pressure = densityError * u_pressureMultiplier.x;
   return pressure;
 }

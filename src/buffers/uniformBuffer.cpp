@@ -30,6 +30,10 @@ UniformBuffer::UniformBuffer(const char *buffName) {
     uniformName = buffName;
     type = bgfx::UniformType::Vec4;
   }
+  if (strcmp(buffName, "u_targetPressure") == 0) {
+    uniformName = buffName;
+    type = bgfx::UniformType::Vec4;
+  }
 
   buffer = bgfx::createUniform(uniformName.c_str(), type);
 }
@@ -58,6 +62,9 @@ void UniformBuffer::bindUniform(const Gui &gui) {
   if (strcmp(uniformName.c_str(), "u_particleColor") == 0) {
     data = {gui.particleColor.x, gui.particleColor.y, gui.particleColor.z,
             gui.particleColor.w};
+  }
+  if (strcmp(uniformName.c_str(), "u_targetPressure") == 0) {
+    data = {gui.targetPressure, 0, 0, 0};
   }
   bgfx::setUniform(buffer, &data);
 }
