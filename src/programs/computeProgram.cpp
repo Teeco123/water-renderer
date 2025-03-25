@@ -10,9 +10,7 @@ ComputeProgram::ComputeProgram(const char *compute, uint32_t groupXInt,
   groupY = groupYInt;
   groupZ = groupZInt;
   name = compute;
-}
 
-void ComputeProgram::init() {
   program = bgfx::createProgram(computeShader, true);
 
   if (!bgfx::isValid(program)) {

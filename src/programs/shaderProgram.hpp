@@ -11,7 +11,6 @@ private:
 
 public:
   ShaderProgram(const char *vertex, const char *fragment);
-  void init() override;
   void submit() override;
   void destroy() override;
 

@@ -13,7 +13,6 @@ private:
 public:
   ComputeProgram(const char *compute, uint32_t groupXInt, uint32_t groupYInt,
                  uint32_t groupZInt);
-  void init() override;
   void submit() override;
   void destroy() override;
 

@@ -6,9 +6,7 @@ ShaderProgram::ShaderProgram(const char *vertex, const char *fragment) {
 
   vertexShader = bgfx::createShader(loadShader(vertex));
   fragmentShader = bgfx::createShader(loadShader(fragment));
-}
 
-void ShaderProgram::init() {
   program = bgfx::createProgram(vertexShader, fragmentShader, true);
 
   if (!bgfx::isValid(program)) {

@@ -41,14 +41,6 @@ int main() {
                               1, 1);
 
   //------------------------------------------------------------------------------------
-  // Init everything
-  shaderProgram.init();
-  posGenProgram.init();
-  step1Program.init();
-  step2Program.init();
-  step3Program.init();
-
-  //------------------------------------------------------------------------------------
   // Generate positions of particles
   u_numPoints.bindUniform(gui);
   u_radius.bindUniform(gui);
