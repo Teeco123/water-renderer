@@ -24,6 +24,7 @@ void Gui::render() {
   ImGui::SliderFloat("SPH Radius", &radius, 1.0f, 200.0f);
   ImGui::SliderFloat("Particle size", &particleSize, 1.0f, 100.0f);
   ImGui::SliderInt("Number of particles", &numParticles, 1, 10);
+  ImGui::InputInt("Random seed", &randomSeed);
   if (ImGui::Button("Reset")) {
     reset = true;
   } else {

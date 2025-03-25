@@ -26,6 +26,7 @@ int main() {
   UniformBuffer u_radius("u_radius");
   UniformBuffer u_resolution("u_resolution");
   UniformBuffer u_particleSize("u_particleSize");
+  UniformBuffer u_randomSeed("u_randomSeed");
 
   ShaderProgram shaderProgram("src/shaders/shader.vertex.bin",
                               "src/shaders/shader.fragment.bin");
@@ -51,6 +52,7 @@ int main() {
   u_radius.init();
   u_resolution.init();
   u_particleSize.init();
+  u_randomSeed.init();
   shaderProgram.init();
   posGenProgram.init();
   step1Program.init();
@@ -62,6 +64,7 @@ int main() {
   u_numPoints.bindUniform(gui);
   u_radius.bindUniform(gui);
   u_resolution.bindUniform(gui);
+  u_randomSeed.bindUniform(gui);
   particleBuffer.bind();
   densitiesBuffer.bind();
   velocitiesBuffer.bind();
@@ -76,6 +79,7 @@ int main() {
       u_numPoints.bindUniform(gui);
       u_radius.bindUniform(gui);
       u_resolution.bindUniform(gui);
+      u_randomSeed.bindUniform(gui);
       particleBuffer.bind();
       densitiesBuffer.bind();
       velocitiesBuffer.bind();

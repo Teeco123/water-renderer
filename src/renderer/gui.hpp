@@ -17,6 +17,7 @@ public:
   int numParticles = 3;
   float radius = 1.0f;
   float particleSize = 1.0f;
+  int randomSeed = 1;
   bool reset = false;
 };
 
