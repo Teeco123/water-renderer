@@ -7,6 +7,7 @@ BUFFER_RW(u_velocities, vec2, 3);
 uniform vec4 u_numParticles;
 uniform vec4 u_radius;
 uniform vec4 u_resolution;
+uniform vec4 u_pressureMultiplier;
 
 float SmoothingKernelDerivative(float radius, float dst){
   if(dst >= radius){
@@ -23,7 +24,7 @@ float Distance2Vectors(vec2 A, vec2 B) {
 
 float DensityToPressure(float density){
   float densityError = density - 100;
-  float pressure = densityError * 2 / 100;
+  float pressure = densityError * u_pressureMultiplier.x;
   return pressure;
 }
 

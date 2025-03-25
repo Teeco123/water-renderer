@@ -22,6 +22,10 @@ UniformBuffer::UniformBuffer(const char *buffName) {
     uniformName = buffName;
     type = bgfx::UniformType::Vec4;
   }
+  if (strcmp(buffName, "u_pressureMultiplier") == 0) {
+    uniformName = buffName;
+    type = bgfx::UniformType::Vec4;
+  }
 
   buffer = bgfx::createUniform(uniformName.c_str(), type);
 }
@@ -43,6 +47,9 @@ void UniformBuffer::bindUniform(const Gui &gui) {
   }
   if (strcmp(uniformName.c_str(), "u_randomSeed") == 0) {
     data = {(float)gui.randomSeed, 0, 0, 0};
+  }
+  if (strcmp(uniformName.c_str(), "u_pressureMultiplier") == 0) {
+    data = {gui.pressureMultiplier, 0, 0, 0};
   }
   bgfx::setUniform(buffer, &data);
 }
