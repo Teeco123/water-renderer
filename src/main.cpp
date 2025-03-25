@@ -28,6 +28,7 @@ int main() {
   UniformBuffer u_particleSize("u_particleSize");
   UniformBuffer u_randomSeed("u_randomSeed");
   UniformBuffer u_pressureMultiplier("u_pressureMultiplier");
+  UniformBuffer u_particleColor("u_particleColor");
 
   ShaderProgram shaderProgram("src/shaders/shader.vertex.bin",
                               "src/shaders/shader.fragment.bin");
@@ -105,6 +106,7 @@ int main() {
     u_radius.bindUniform(gui);
     u_resolution.bindUniform(gui);
     u_particleSize.bindUniform(gui);
+    u_particleColor.bindUniform(gui);
     particleBuffer.bind();
     pixelsBuffer.bind();
     shaderProgram.submit();
