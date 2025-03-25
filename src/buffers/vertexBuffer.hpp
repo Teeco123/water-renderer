@@ -13,7 +13,6 @@ private:
 
 public:
   VertexBuffer(uint8_t streamInt, const char *buffName);
-  void init() override;
   void bind() override;
   void destroy() override;
 

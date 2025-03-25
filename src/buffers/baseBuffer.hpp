@@ -8,7 +8,6 @@
 
 class BaseBuffer {
 public:
-  virtual void init() = 0;
   virtual void bind() = 0;
   virtual void destroy() = 0;
   virtual ~BaseBuffer() {}

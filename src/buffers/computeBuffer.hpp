@@ -14,7 +14,6 @@ private:
 public:
   ComputeBuffer(uint8_t stageInt, const char *buffName,
                 bgfx::Access::Enum access);
-  void init() override;
   void bind() override;
   void destroy() override;
 

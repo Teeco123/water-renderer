@@ -11,7 +11,6 @@ private:
 
 public:
   IndexBuffer(const char *buffName);
-  void init() override;
   void bind() override;
   void destroy() override;
 

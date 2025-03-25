@@ -11,9 +11,8 @@ IndexBuffer::IndexBuffer(const char *buffName) {
 
     data = bgfx::copy(squareIndices, sizeof(squareIndices));
   }
+  ibo = bgfx::createIndexBuffer(data);
 }
-
-void IndexBuffer::init() { ibo = bgfx::createIndexBuffer(data); }
 
 void IndexBuffer::bind() { bgfx::setIndexBuffer(ibo); }
 

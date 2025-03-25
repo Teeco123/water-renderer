@@ -42,17 +42,6 @@ int main() {
 
   //------------------------------------------------------------------------------------
   // Init everything
-  vbo.init();
-  ibo.init();
-  particleBuffer.init();
-  pixelsBuffer.init();
-  densitiesBuffer.init();
-  velocitiesBuffer.init();
-  u_numPoints.init();
-  u_radius.init();
-  u_resolution.init();
-  u_particleSize.init();
-  u_randomSeed.init();
   shaderProgram.init();
   posGenProgram.init();
   step1Program.init();

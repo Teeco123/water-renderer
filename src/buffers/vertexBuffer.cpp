@@ -13,9 +13,9 @@ VertexBuffer::VertexBuffer(uint8_t streamInt, const char *buffName) {
     data = bgfx::copy(squareVertices, sizeof(squareVertices));
     stream = streamInt;
   }
-}
 
-void VertexBuffer::init() { vbo = bgfx::createVertexBuffer(data, layout); }
+  vbo = bgfx::createVertexBuffer(data, layout);
+}
 
 void VertexBuffer::bind() { bgfx::setVertexBuffer(stream, vbo); }
 

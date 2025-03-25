@@ -46,9 +46,7 @@ ComputeBuffer::ComputeBuffer(uint8_t stageInt, const char *buffName,
 
     stage = stageInt;
   }
-}
 
-void ComputeBuffer::init() {
   buffer = bgfx::createDynamicVertexBuffer(size, layout,
                                            BGFX_BUFFER_COMPUTE_READ_WRITE);
 }

@@ -22,9 +22,7 @@ UniformBuffer::UniformBuffer(const char *buffName) {
     uniformName = buffName;
     type = bgfx::UniformType::Vec4;
   }
-}
 
-void UniformBuffer::init() {
   buffer = bgfx::createUniform(uniformName.c_str(), type);
 }
 

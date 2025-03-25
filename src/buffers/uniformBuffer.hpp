@@ -13,7 +13,6 @@ private:
 
 public:
   UniformBuffer(const char *buffName);
-  void init() override;
   void bind() override;
   void destroy() override;
   void bindUniform(const Gui &gui);
