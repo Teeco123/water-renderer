@@ -31,6 +31,7 @@ int main() {
   UniformBuffer u_pressureMultiplier("u_pressureMultiplier");
   UniformBuffer u_particleColor("u_particleColor");
   UniformBuffer u_targetPressure("u_targetPressure");
+  UniformBuffer u_gravityStatus("u_gravityStatus");
 
   ShaderProgram shaderProgram("src/shaders/shader.vertex.bin",
                               "src/shaders/shader.fragment.bin");
@@ -72,6 +73,7 @@ int main() {
       posGenProgram.submit();
     }
 
+    u_gravityStatus.bindUniform(gui);
     particleBuffer.bind();
     velocitiesBuffer.bind();
     predictionsBuffer.bind();

@@ -26,6 +26,7 @@ void Gui::render() {
   ImGui::SliderFloat("Pressure multiplier", &pressureMultiplier, 0.01f, 5.0f);
   ImGui::SliderFloat("Target pressure", &targetPressure, 1.0f, 5000.0f);
   ImGui::SliderInt("Number of particles", &numParticles, 1, 10);
+  ImGui::SliderInt("Gravity OFF/ON", &gravityStatus, 0, 1);
   ImGui::ColorEdit4("Particle color", (float *)&particleColor);
   ImGui::InputInt("Random seed", &randomSeed);
   if (ImGui::Button("Reset")) {

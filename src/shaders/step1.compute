@@ -1,17 +1,18 @@
 #include "bgfx_compute.sh"
 
 BUFFER_RW(u_particle, vec2, 0);
-BUFFER_RW(u_densities, vec4, 2);
 BUFFER_RW(u_velocities, vec2, 3);
 BUFFER_RW(u_predictedPositions, vec2, 4);
 
-uniform vec4 u_numParticles;
-uniform vec4 u_radius;
-uniform vec4 u_resolution;
+uniform vec4 u_gravityStatus;
 
 NUM_THREADS(256, 1, 1)
 void main() {
   uint idx = gl_GlobalInvocationID.x;
+
+  if(u_gravityStatus.x == 1){
+    u_velocities[idx] += vec2(0,1) * (9.81 / 2) * 0.008;
+  }
 
   u_predictedPositions[idx] = u_particle[idx] + u_velocities[idx] * 0.008;
 }
