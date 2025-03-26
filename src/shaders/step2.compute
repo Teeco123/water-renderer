@@ -3,66 +3,43 @@
 BUFFER_RW(u_particle, vec2, 0);
 BUFFER_RW(u_densities, vec4, 2);
 BUFFER_RW(u_velocities, vec2, 3);
+BUFFER_RW(u_predictedPositions, vec2, 4);
 
 uniform vec4 u_numParticles;
 uniform vec4 u_radius;
 uniform vec4 u_resolution;
-uniform vec4 u_pressureMultiplier;
-uniform vec4 u_targetPressure;
 
-float SmoothingKernelDerivative(float radius, float dst){
-  if(dst >= radius){
-    return 0;
-  }
-  float f = radius * radius - dst * dst;
-  float scale = -24 / (3.14159265359 * pow(radius, 8.0));
-  return scale * dst * f * f;
+float SmoothingKernel(float radius, float dst) {
+    float volume = 3.14159265359 * pow(radius, 8.0) / 4.0;
+    float squared = radius * radius - dst * dst;
+    float value = (squared > 0.0) ? squared : 0.0;
+    
+    return (value * value * value) / volume;
 }
 
 float Distance2Vectors(vec2 A, vec2 B) {
     return length(A - B);
 }
 
-float DensityToPressure(float density){
-  float densityError = density - u_targetPressure.x;
-  float pressure = densityError * u_pressureMultiplier.x;
-  return pressure;
-}
+float CalculateDensity(vec2 samplePoint) {
+    float density = 0.0;
+    const float mass = 1.0;
 
-float CalculateSharedPressure(float densA, float densB){
-  float pressureA = DensityToPressure(densA);
-  float pressureB = DensityToPressure(densB);
-  return (pressureA + pressureB) / 2;
-}
+    for (int i = 0; i < u_numParticles.x; i++) {
+        vec2 normalizedSample = (samplePoint + 1) / 2;
+        vec2 normalizedPoint = (u_particle[i] + 1) / 2;
+        float normalizedRadius = u_radius.x / u_resolution.x;
 
-vec2 CalculatePressureForce(int sampleIndex){
-  vec2 pressureForce = vec2(0,0);
-  const float mass = 1.0;
-
-  for(int particleIndex = 0; particleIndex < u_numParticles.x; particleIndex++){
-    if(sampleIndex == particleIndex) continue;
-
-    vec2 normalizedSample = (u_particle[sampleIndex] + 1) / 2;
-    vec2 normalizedPoint = (u_particle[particleIndex] + 1) / 2;
-    float normalizedRadius = u_radius.x / u_resolution.x;
-
-    vec2 offset = normalizedPoint - normalizedSample;
-    float dst = Distance2Vectors(normalizedPoint, normalizedSample);
-    vec2 dir = offset / dst;
-
-    float slope = SmoothingKernelDerivative(normalizedRadius, dst);
-    float density = u_densities[particleIndex].x;
-    float sharedPressure = CalculateSharedPressure(density, u_densities[sampleIndex].x);
-    pressureForce += sharedPressure * dir * slope * mass / density;
-  }
-  return pressureForce;
+        float dst = Distance2Vectors(normalizedSample, normalizedPoint);
+        float influence = SmoothingKernel(normalizedRadius, dst);
+        density += mass * influence;
+    }
+    return density;
 }
 
 NUM_THREADS(256, 1, 1)
 void main() {
   uint idx = gl_GlobalInvocationID.x;
 
-  vec2 pressureForce = CalculatePressureForce(idx);
-  vec2 pressureAcceleration = pressureForce / u_densities[idx].x;
-  u_velocities[idx] += pressureAcceleration * 0.008;  
+  u_densities[idx].x = CalculateDensity(u_predictedPositions[idx]);
 }

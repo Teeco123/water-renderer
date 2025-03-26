@@ -17,10 +17,11 @@ int main() {
   IndexBuffer ibo("screenIBO");
 
   ComputeBuffer particleBuffer(0, "particleBuffer", bgfx::Access::ReadWrite);
-  ComputeBuffer pixelsBuffer(1, "pixelsBuffer", bgfx::Access::ReadWrite);
   ComputeBuffer densitiesBuffer(2, "densitiesBuffer", bgfx::Access::ReadWrite);
   ComputeBuffer velocitiesBuffer(3, "velocitiesBuffer",
                                  bgfx::Access::ReadWrite);
+  ComputeBuffer predictionsBuffer(4, "predictionsBuffer",
+                                  bgfx::Access::ReadWrite);
 
   UniformBuffer u_numPoints("u_numParticles");
   UniformBuffer u_radius("u_radius");
@@ -42,7 +43,8 @@ int main() {
                               1, 1);
   ComputeProgram step3Program("src/shaders/step3.compute.bin", gui.numParticles,
                               1, 1);
-
+  ComputeProgram step4Program("src/shaders/step4.compute.bin", gui.numParticles,
+                              1, 1);
   //------------------------------------------------------------------------------------
   // Generate positions of particles
   u_numPoints.bindUniform(gui);
@@ -70,6 +72,11 @@ int main() {
       posGenProgram.submit();
     }
 
+    particleBuffer.bind();
+    velocitiesBuffer.bind();
+    predictionsBuffer.bind();
+    step1Program.submit();
+
     //------------------------------------------------------------------------------------
     // Calculate cached densities of particle positions
     u_numPoints.bindUniform(gui);
@@ -78,7 +85,8 @@ int main() {
     particleBuffer.bind();
     densitiesBuffer.bind();
     velocitiesBuffer.bind();
-    step1Program.submit();
+    predictionsBuffer.bind();
+    step2Program.submit();
 
     //------------------------------------------------------------------------------------
     // Calculate velocity based on pressure force of particle
@@ -90,7 +98,8 @@ int main() {
     particleBuffer.bind();
     densitiesBuffer.bind();
     velocitiesBuffer.bind();
-    step2Program.submit();
+    predictionsBuffer.bind();
+    step3Program.submit();
 
     //------------------------------------------------------------------------------------
     // Update positions and handle boundaries colistions
@@ -100,7 +109,8 @@ int main() {
     particleBuffer.bind();
     densitiesBuffer.bind();
     velocitiesBuffer.bind();
-    step3Program.submit();
+    predictionsBuffer.bind();
+    step4Program.submit();
 
     vbo.bind();
     ibo.bind();
@@ -110,7 +120,6 @@ int main() {
     u_particleSize.bindUniform(gui);
     u_particleColor.bindUniform(gui);
     particleBuffer.bind();
-    pixelsBuffer.bind();
     shaderProgram.submit();
 
     gui.render();
