@@ -53,6 +53,8 @@ vec2 CalculatePressureForce(int sampleIndex){
 
     float slope = SmoothingKernelDerivative(normalizedRadius, dst);
     float density = u_densities[particleIndex].x;
+    if(density < 0.0001) continue;
+
     float sharedPressure = CalculateSharedPressure(density, u_densities[sampleIndex].x);
     pressureForce += sharedPressure * dir * slope * mass / density;
   }
