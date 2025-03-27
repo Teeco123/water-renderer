@@ -26,7 +26,11 @@ UniformBuffer::UniformBuffer(const char *buffName) {
     uniformName = buffName;
     type = bgfx::UniformType::Vec4;
   }
-  if (strcmp(buffName, "u_particleColor") == 0) {
+  if (strcmp(buffName, "u_particleColorLow") == 0) {
+    uniformName = buffName;
+    type = bgfx::UniformType::Vec4;
+  }
+  if (strcmp(buffName, "u_particleColorHigh") == 0) {
     uniformName = buffName;
     type = bgfx::UniformType::Vec4;
   }
@@ -63,9 +67,13 @@ void UniformBuffer::bindUniform(const Gui &gui) {
   if (strcmp(uniformName.c_str(), "u_pressureMultiplier") == 0) {
     data = {gui.pressureMultiplier, 0, 0, 0};
   }
-  if (strcmp(uniformName.c_str(), "u_particleColor") == 0) {
-    data = {gui.particleColor.x, gui.particleColor.y, gui.particleColor.z,
-            gui.particleColor.w};
+  if (strcmp(uniformName.c_str(), "u_particleColorLow") == 0) {
+    data = {gui.particleColorLow.x, gui.particleColorLow.y,
+            gui.particleColorLow.z, gui.particleColorLow.w};
+  }
+  if (strcmp(uniformName.c_str(), "u_particleColorHigh") == 0) {
+    data = {gui.particleColorHigh.x, gui.particleColorHigh.y,
+            gui.particleColorHigh.z, gui.particleColorHigh.w};
   }
   if (strcmp(uniformName.c_str(), "u_targetPressure") == 0) {
     data = {gui.targetPressure, 0, 0, 0};

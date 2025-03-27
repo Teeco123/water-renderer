@@ -23,7 +23,8 @@ void Gui::render() {
                ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoResize);
   ImGui::SeparatorText("Particle display");
   ImGui::SliderFloat("Particle size", &particleSize, 1.0f, 100.0f);
-  ImGui::ColorEdit4("Particle color", (float *)&particleColor);
+  ImGui::ColorEdit4("Particle color low", (float *)&particleColorLow);
+  ImGui::ColorEdit4("Particle color high", (float *)&particleColorHigh);
 
   ImGui::SeparatorText("Particle settings");
   ImGui::SliderInt("Number of particles", &numParticles, 1, 10);

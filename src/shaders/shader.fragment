@@ -4,13 +4,15 @@ $input v_color0
 #include <bgfx_compute.sh>
 
 BUFFER_RW(u_particle, vec2, 0);
-BUFFER_RW(u_pixel,vec4,1);
+BUFFER_RW(u_velocities, vec2, 3);
 
 uniform vec4 u_numParticles;
 uniform vec4 u_radius;
 uniform vec4 u_resolution;
 uniform vec4 u_particleSize;
-uniform vec4 u_particleColor;
+uniform vec4 u_pressureMultiplier;
+uniform vec4 u_particleColorLow;
+uniform vec4 u_particleColorHigh;
 
 void main()
 {
@@ -23,9 +25,14 @@ void main()
         vec2 screenPos = particlePos * u_resolution.x;
         
         float distance = length(gl_FragCoord.xy - screenPos);
+
+        vec2 normalizedVel = (u_velocities[i] + 1) / 2;
+
+        float speed = length(normalizedVel);
+        float speedT = saturate(speed / 4);
         
         if(distance < u_particleSize.x) {
-            finalColor = u_particleColor;
+            finalColor = mix(u_particleColorLow, u_particleColorHigh, speedT);
         }
     }
     

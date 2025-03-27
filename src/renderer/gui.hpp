@@ -20,7 +20,8 @@ public:
   float particleSize = 1.0f;
   float pressureMultiplier = 0.01f;
   float targetPressure = 1.0f;
-  Vec4 particleColor = {1, 1, 1, 1};
+  Vec4 particleColorLow = {0, 0, 1, 1};
+  Vec4 particleColorHigh = {1, 0, 0, 1};
   int gravityStatus = 0;
   int randomSeed = 1;
 

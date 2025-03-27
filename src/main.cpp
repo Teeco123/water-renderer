@@ -29,7 +29,8 @@ int main() {
   UniformBuffer u_particleSize("u_particleSize");
   UniformBuffer u_randomSeed("u_randomSeed");
   UniformBuffer u_pressureMultiplier("u_pressureMultiplier");
-  UniformBuffer u_particleColor("u_particleColor");
+  UniformBuffer u_particleColorLow("u_particleColorLow");
+  UniformBuffer u_particleColorHigh("u_particleColorHigh");
   UniformBuffer u_targetPressure("u_targetPressure");
   UniformBuffer u_gravityStatus("u_gravityStatus");
 
@@ -122,8 +123,11 @@ int main() {
     u_radius.bindUniform(gui);
     u_resolution.bindUniform(gui);
     u_particleSize.bindUniform(gui);
-    u_particleColor.bindUniform(gui);
+    u_pressureMultiplier.bindUniform(gui);
+    u_particleColorLow.bindUniform(gui);
+    u_particleColorHigh.bindUniform(gui);
     particleBuffer.bind();
+    velocitiesBuffer.bind();
     shaderProgram.submit();
 
     gui.render();
