@@ -49,11 +49,11 @@ vec2 CalculatePressureForce(int sampleIndex){
 
     vec2 offset = normalizedPoint - normalizedSample;
     float dst = Distance2Vectors(normalizedPoint, normalizedSample);
-    vec2 dir = offset / dst;
+    vec2 dir = dst == 0 ? vec2(0,1): offset / dst;
 
     float slope = SmoothingKernelDerivative(normalizedRadius, dst);
     float density = u_densities[particleIndex].x;
-    if(density < 0.0001) continue;
+    if(density == 0) continue;
 
     float sharedPressure = CalculateSharedPressure(density, u_densities[sampleIndex].x);
     pressureForce += sharedPressure * dir * slope * mass / density;
@@ -64,6 +64,8 @@ vec2 CalculatePressureForce(int sampleIndex){
 NUM_THREADS(256, 1, 1)
 void main() {
   uint idx = gl_GlobalInvocationID.x;
+
+  if(u_densities[idx].x == 0) return;
 
   vec2 pressureForce = CalculatePressureForce(idx);
   vec2 pressureAcceleration = pressureForce / u_densities[idx].x;
