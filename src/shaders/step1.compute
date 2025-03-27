@@ -5,6 +5,27 @@ BUFFER_RW(u_velocities, vec2, 3);
 BUFFER_RW(u_predictedPositions, vec2, 4);
 
 uniform vec4 u_gravityStatus;
+uniform vec4 u_mouse;
+uniform vec4 u_resolution;
+
+vec2 InputForce(vec2 pos, vec2 vel){
+  vec2 force = vec2(0,0);
+  vec2 normalizedMouse = ((u_mouse.xy / u_resolution.xy) * 2) - 1;
+  float2 inputPointOffset = normalizedMouse - pos;
+  float sqrDst = dot(inputPointOffset, inputPointOffset);
+
+  float radius = 0.5;
+  float strength = 5;
+
+  if (sqrDst < radius * radius)
+    {
+			float dst = sqrt(sqrDst);
+      vec2 dirToInputPoint = dst <= 0.000001 ? vec2(0,0) : inputPointOffset / dst;
+      float centerT = 1 - dst / radius;
+      force += (dirToInputPoint * strength - vel) * centerT;
+		}
+	return force;
+}
 
 NUM_THREADS(256, 1, 1)
 void main() {
@@ -13,6 +34,8 @@ void main() {
   if(u_gravityStatus.x == 1){
     u_velocities[idx] += vec2(0,1) * (9.81 / 2) * 0.008;
   }
+
+  u_velocities[idx] += InputForce(u_particle[idx], u_velocities[idx]) * 0.008;
 
   u_predictedPositions[idx] = u_particle[idx] + u_velocities[idx] * 0.008;
 }

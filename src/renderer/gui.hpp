@@ -25,6 +25,9 @@ public:
   int gravityStatus = 0;
   int randomSeed = 1;
 
+  double mousePosX;
+  double mousePosY;
+
   int pause = 0;
   bool reset = false;
 };

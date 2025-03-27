@@ -33,6 +33,7 @@ int main() {
   UniformBuffer u_particleColorHigh("u_particleColorHigh");
   UniformBuffer u_targetPressure("u_targetPressure");
   UniformBuffer u_gravityStatus("u_gravityStatus");
+  UniformBuffer u_mouse("u_mouse");
 
   ShaderProgram shaderProgram("src/shaders/shader.vertex.bin",
                               "src/shaders/shader.fragment.bin");
@@ -47,6 +48,7 @@ int main() {
                               1, 1);
   ComputeProgram step4Program("src/shaders/step4.compute.bin", gui.numParticles,
                               1, 1);
+
   //------------------------------------------------------------------------------------
   // Generate positions of particles
   u_numPoints.bindUniform(gui);
@@ -60,6 +62,8 @@ int main() {
 
   while (!window.shouldClose()) {
     window.pollEvents();
+
+    glfwGetCursorPos(window.getNativeWindow(), &gui.mousePosX, &gui.mousePosY);
 
     //------------------------------------------------------------------------------------
     // Re-generate positions of particles
@@ -76,6 +80,8 @@ int main() {
 
     if (gui.pause == 0) {
       u_gravityStatus.bindUniform(gui);
+      u_resolution.bindUniform(gui);
+      u_mouse.bindUniform(gui);
       particleBuffer.bind();
       velocitiesBuffer.bind();
       predictionsBuffer.bind();
