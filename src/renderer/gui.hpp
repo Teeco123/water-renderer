@@ -23,6 +23,8 @@ public:
   Vec4 particleColor = {1, 1, 1, 1};
   int gravityStatus = 0;
   int randomSeed = 1;
+
+  int pause = 0;
   bool reset = false;
 };
 
