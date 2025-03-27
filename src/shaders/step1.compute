@@ -35,7 +35,9 @@ void main() {
     u_velocities[idx] += vec2(0,1) * (9.81 / 2) * 0.008;
   }
 
-  u_velocities[idx] += InputForce(u_particle[idx], u_velocities[idx]) * 0.008;
+  if(u_mouse.z == 1){
+    u_velocities[idx] += InputForce(u_particle[idx], u_velocities[idx]) * 0.008;
+  }
 
   u_predictedPositions[idx] = u_particle[idx] + u_velocities[idx] * 0.008;
 }

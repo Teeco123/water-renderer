@@ -1,3 +1,4 @@
+#include "GLFW/glfw3.h"
 #include "buffers/computeBuffer.hpp"
 #include "buffers/indexBuffer.hpp"
 #include "buffers/uniformBuffer.hpp"
@@ -64,6 +65,19 @@ int main() {
     window.pollEvents();
 
     glfwGetCursorPos(window.getNativeWindow(), &gui.mousePosX, &gui.mousePosY);
+
+    int leftMouse =
+        glfwGetMouseButton(window.getNativeWindow(), GLFW_MOUSE_BUTTON_LEFT);
+    int rightMouse =
+        glfwGetMouseButton(window.getNativeWindow(), GLFW_MOUSE_BUTTON_RIGHT);
+
+    if (leftMouse == GLFW_PRESS) {
+      gui.mouseButton = 1;
+    } else if (rightMouse == GLFW_PRESS) {
+      gui.mouseButton = 2;
+    } else {
+      gui.mouseButton = 0;
+    }
 
     //------------------------------------------------------------------------------------
     // Re-generate positions of particles

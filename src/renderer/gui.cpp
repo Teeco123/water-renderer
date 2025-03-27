@@ -43,6 +43,7 @@ void Gui::render() {
   } else {
     reset = false;
   }
+  ImGui::Text("%d", mouseButton);
 
   ImGui::End();
 

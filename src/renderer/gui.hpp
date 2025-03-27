@@ -27,6 +27,7 @@ public:
 
   double mousePosX;
   double mousePosY;
+  int mouseButton = 0;
 
   int pause = 0;
   bool reset = false;
