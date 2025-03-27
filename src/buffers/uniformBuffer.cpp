@@ -86,7 +86,7 @@ void UniformBuffer::bindUniform(const Gui &gui) {
     data = {(float)gui.gravityStatus, 0, 0, 0};
   }
   if (strcmp(uniformName.c_str(), "u_mouse") == 0) {
-    data = {(float)gui.mousePosX, (float)gui.mousePosY, 0, 0};
+    data = {(float)gui.mousePosX * 2, (float)gui.mousePosY * 2, 0, 0};
   }
   bgfx::setUniform(buffer, &data);
 }
