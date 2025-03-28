@@ -30,6 +30,10 @@ void Gui::render() {
   ImGui::SliderInt("Number of particles", &numParticles, 1, 10);
   ImGui::InputInt("Random seed", &randomSeed);
 
+  ImGui::SeparatorText("Interaction settings");
+  ImGui::SliderFloat("Interaction strength", &mouseStrength, 1, 50);
+  ImGui::SliderFloat("Interaction radius", &mouseRadius, 0, 2);
+
   ImGui::SeparatorText("Simulation settings");
   ImGui::SliderFloat("SPH radius", &radius, 1.0f, 200.0f);
   ImGui::SliderFloat("Pressure multiplier", &pressureMultiplier, 0.01f, 5.0f);
@@ -43,7 +47,6 @@ void Gui::render() {
   } else {
     reset = false;
   }
-  ImGui::Text("%d", mouseButton);
 
   ImGui::End();
 

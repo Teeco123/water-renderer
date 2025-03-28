@@ -46,6 +46,14 @@ UniformBuffer::UniformBuffer(const char *buffName) {
     uniformName = buffName;
     type = bgfx::UniformType::Vec4;
   }
+  if (strcmp(buffName, "u_mouseStrength") == 0) {
+    uniformName = buffName;
+    type = bgfx::UniformType::Vec4;
+  }
+  if (strcmp(buffName, "u_mouseRadius") == 0) {
+    uniformName = buffName;
+    type = bgfx::UniformType::Vec4;
+  }
 
   buffer = bgfx::createUniform(uniformName.c_str(), type);
 }
@@ -88,6 +96,12 @@ void UniformBuffer::bindUniform(const Gui &gui) {
   if (strcmp(uniformName.c_str(), "u_mouse") == 0) {
     data = {(float)gui.mousePosX * 2, (float)gui.mousePosY * 2,
             (float)gui.mouseButton, 0};
+  }
+  if (strcmp(uniformName.c_str(), "u_mouseStrength") == 0) {
+    data = {gui.mouseStrength, 0, 0, 0};
+  }
+  if (strcmp(uniformName.c_str(), "u_mouseRadius") == 0) {
+    data = {gui.mouseRadius, 0, 0, 0};
   }
   bgfx::setUniform(buffer, &data);
 }

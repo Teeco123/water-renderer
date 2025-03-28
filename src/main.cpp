@@ -35,6 +35,8 @@ int main() {
   UniformBuffer u_targetPressure("u_targetPressure");
   UniformBuffer u_gravityStatus("u_gravityStatus");
   UniformBuffer u_mouse("u_mouse");
+  UniformBuffer u_mouseStrength("u_mouseStrength");
+  UniformBuffer u_mouseRadius("u_mouseRadius");
 
   ShaderProgram shaderProgram("src/shaders/shader.vertex.bin",
                               "src/shaders/shader.fragment.bin");
@@ -96,6 +98,8 @@ int main() {
       u_gravityStatus.bindUniform(gui);
       u_resolution.bindUniform(gui);
       u_mouse.bindUniform(gui);
+      u_mouseStrength.bindUniform(gui);
+      u_mouseRadius.bindUniform(gui);
       particleBuffer.bind();
       velocitiesBuffer.bind();
       predictionsBuffer.bind();

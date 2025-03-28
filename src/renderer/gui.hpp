@@ -28,6 +28,8 @@ public:
   double mousePosX;
   double mousePosY;
   int mouseButton = 0;
+  float mouseStrength = 1;
+  float mouseRadius = 0;
 
   int pause = 0;
   bool reset = false;

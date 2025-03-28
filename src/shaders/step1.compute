@@ -6,6 +6,8 @@ BUFFER_RW(u_predictedPositions, vec2, 4);
 
 uniform vec4 u_gravityStatus;
 uniform vec4 u_mouse;
+uniform vec4 u_mouseStrength;
+uniform vec4 u_mouseRadius;
 uniform vec4 u_resolution;
 
 vec2 InputForce(vec2 pos, vec2 vel){
@@ -14,15 +16,12 @@ vec2 InputForce(vec2 pos, vec2 vel){
   float2 inputPointOffset = normalizedMouse - pos;
   float sqrDst = dot(inputPointOffset, inputPointOffset);
 
-  float radius = 0.5;
-  float strength = 10;
-
-  if (sqrDst < radius * radius)
+  if (sqrDst < u_mouseRadius.x * u_mouseRadius.x)
     {
 			float dst = sqrt(sqrDst);
       vec2 dirToInputPoint = dst <= 0.000001 ? vec2(0,0) : inputPointOffset / dst;
-      float centerT = 1 - dst / radius;
-      force += (dirToInputPoint * strength - vel) * centerT;
+      float centerT = 1 - dst / u_mouseRadius.x;
+      force += (dirToInputPoint * u_mouseStrength.x - vel) * centerT;
 		}
 	return force;
 }
