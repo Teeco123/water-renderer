@@ -15,7 +15,7 @@ vec2 InputForce(vec2 pos, vec2 vel){
   float sqrDst = dot(inputPointOffset, inputPointOffset);
 
   float radius = 0.5;
-  float strength = 5;
+  float strength = 10;
 
   if (sqrDst < radius * radius)
     {
@@ -37,6 +37,9 @@ void main() {
 
   if(u_mouse.z == 1){
     u_velocities[idx] += InputForce(u_particle[idx], u_velocities[idx]) * 0.008;
+  }
+  if(u_mouse.z == 2){
+    u_velocities[idx] -= InputForce(u_particle[idx], u_velocities[idx]) * 0.008;
   }
 
   u_predictedPositions[idx] = u_particle[idx] + u_velocities[idx] * 0.008;
