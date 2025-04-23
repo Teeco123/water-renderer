@@ -11,6 +11,7 @@
 
 struct SimulationData {
   UniformBuffer &u_gravityStatus;
+  UniformBuffer &u_gravity;
   UniformBuffer &u_resolution;
   UniformBuffer &u_randomSeed;
   UniformBuffer &u_mouse;
@@ -47,11 +48,11 @@ void reset(Gui &gui, SimulationData &sim) {
 void step(int pause, Gui &gui, SimulationData &sim) {
   if (pause != 1) {
     sim.u_gravityStatus.bindUniform(gui);
+    sim.u_gravity.bindUniform(gui);
     sim.u_resolution.bindUniform(gui);
     sim.u_mouse.bindUniform(gui);
     sim.u_mouseStrength.bindUniform(gui);
     sim.u_mouseRadius.bindUniform(gui);
-
     sim.particleBuffer.bind();
     sim.velocitiesBuffer.bind();
     sim.predictionsBuffer.bind();
@@ -113,6 +114,7 @@ int main() {
   UniformBuffer u_particleColorHigh("u_particleColorHigh");
   UniformBuffer u_targetPressure("u_targetPressure");
   UniformBuffer u_gravityStatus("u_gravityStatus");
+  UniformBuffer u_gravity("u_gravity");
   UniformBuffer u_mouse("u_mouse");
   UniformBuffer u_mouseStrength("u_mouseStrength");
   UniformBuffer u_mouseRadius("u_mouseRadius");
@@ -132,11 +134,13 @@ int main() {
                               1, 1);
 
   SimulationData sim = {
-      u_gravityStatus,      u_resolution,      u_randomSeed,   u_mouse,
-      u_mouseStrength,      u_mouseRadius,     u_numPoints,    u_radius,
-      u_pressureMultiplier, u_targetPressure,  particleBuffer, densitiesBuffer,
-      velocitiesBuffer,     predictionsBuffer, posGenProgram,  step1Program,
-      step2Program,         step3Program,      step4Program};
+      u_gravityStatus,      u_gravity,        u_resolution,
+      u_randomSeed,         u_mouse,          u_mouseStrength,
+      u_mouseRadius,        u_numPoints,      u_radius,
+      u_pressureMultiplier, u_targetPressure, particleBuffer,
+      densitiesBuffer,      velocitiesBuffer, predictionsBuffer,
+      posGenProgram,        step1Program,     step2Program,
+      step3Program,         step4Program};
 
   reset(gui, sim);
 

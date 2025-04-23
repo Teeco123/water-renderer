@@ -23,6 +23,7 @@ public:
   Vec4 particleColorLow = {0, 0, 1, 1};
   Vec4 particleColorHigh = {1, 0, 0, 1};
   int gravityStatus = 0;
+  float gravity = 1;
   int randomSeed = 1;
 
   double mousePosX;

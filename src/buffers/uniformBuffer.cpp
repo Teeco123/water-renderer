@@ -42,6 +42,10 @@ UniformBuffer::UniformBuffer(const char *buffName) {
     uniformName = buffName;
     type = bgfx::UniformType::Vec4;
   }
+  if (strcmp(buffName, "u_gravity") == 0) {
+    uniformName = buffName;
+    type = bgfx::UniformType::Vec4;
+  }
   if (strcmp(buffName, "u_mouse") == 0) {
     uniformName = buffName;
     type = bgfx::UniformType::Vec4;
@@ -92,6 +96,9 @@ void UniformBuffer::bindUniform(const Gui &gui) {
   }
   if (strcmp(uniformName.c_str(), "u_gravityStatus") == 0) {
     data = {(float)gui.gravityStatus, 0, 0, 0};
+  }
+  if (strcmp(uniformName.c_str(), "u_gravity") == 0) {
+    data = {gui.gravity, 0, 0, 0};
   }
   if (strcmp(uniformName.c_str(), "u_mouse") == 0) {
     data = {(float)gui.mousePosX * 2, (float)gui.mousePosY * 2,

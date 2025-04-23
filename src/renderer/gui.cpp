@@ -39,6 +39,7 @@ void Gui::render() {
   ImGui::SliderFloat("Pressure multiplier", &pressureMultiplier, 0.01f, 5.0f);
   ImGui::SliderFloat("Target pressure", &targetPressure, 1.0f, 5000.0f);
   ImGui::SliderInt("Gravity OFF/ON", &gravityStatus, 0, 1);
+  ImGui::SliderFloat("Gravity", &gravity, 0, 10);
 
   ImGui::SeparatorText("Simulation controls");
   ImGui::SliderInt("Pause OFF/ON", &pause, 0, 1);
