@@ -12,6 +12,7 @@
 struct SimulationData {
   UniformBuffer &u_gravityStatus;
   UniformBuffer &u_resolution;
+  UniformBuffer &u_randomSeed;
   UniformBuffer &u_mouse;
   UniformBuffer &u_mouseStrength;
   UniformBuffer &u_mouseRadius;
@@ -25,11 +26,23 @@ struct SimulationData {
   ComputeBuffer &velocitiesBuffer;
   ComputeBuffer &predictionsBuffer;
 
+  ComputeProgram &posGenProgram;
   ComputeProgram &step1Program;
   ComputeProgram &step2Program;
   ComputeProgram &step3Program;
   ComputeProgram &step4Program;
 };
+
+void reset(Gui &gui, SimulationData &sim) {
+  sim.u_numPoints.bindUniform(gui);
+  sim.u_radius.bindUniform(gui);
+  sim.u_resolution.bindUniform(gui);
+  sim.u_randomSeed.bindUniform(gui);
+  sim.particleBuffer.bind();
+  sim.densitiesBuffer.bind();
+  sim.velocitiesBuffer.bind();
+  sim.posGenProgram.submit();
+}
 
 void step(int pause, Gui &gui, SimulationData &sim) {
   if (pause != 1) {
@@ -119,22 +132,13 @@ int main() {
                               1, 1);
 
   SimulationData sim = {
-      u_gravityStatus,   u_resolution,   u_mouse,         u_mouseStrength,
-      u_mouseRadius,     u_numPoints,    u_radius,        u_pressureMultiplier,
-      u_targetPressure,  particleBuffer, densitiesBuffer, velocitiesBuffer,
-      predictionsBuffer, step1Program,   step2Program,    step3Program,
-      step4Program};
+      u_gravityStatus,      u_resolution,      u_randomSeed,   u_mouse,
+      u_mouseStrength,      u_mouseRadius,     u_numPoints,    u_radius,
+      u_pressureMultiplier, u_targetPressure,  particleBuffer, densitiesBuffer,
+      velocitiesBuffer,     predictionsBuffer, posGenProgram,  step1Program,
+      step2Program,         step3Program,      step4Program};
 
-  //------------------------------------------------------------------------------------
-  // Generate positions of particles
-  u_numPoints.bindUniform(gui);
-  u_radius.bindUniform(gui);
-  u_resolution.bindUniform(gui);
-  u_randomSeed.bindUniform(gui);
-  particleBuffer.bind();
-  densitiesBuffer.bind();
-  velocitiesBuffer.bind();
-  posGenProgram.submit();
+  reset(gui, sim);
 
   while (!window.shouldClose()) {
     window.pollEvents();
@@ -154,19 +158,12 @@ int main() {
       gui.mouseButton = 0;
     }
 
-    //------------------------------------------------------------------------------------
-    // Re-generate positions of particles
     if (gui.reset) {
-      u_numPoints.bindUniform(gui);
-      u_radius.bindUniform(gui);
-      u_resolution.bindUniform(gui);
-      u_randomSeed.bindUniform(gui);
-      particleBuffer.bind();
-      densitiesBuffer.bind();
-      velocitiesBuffer.bind();
-      posGenProgram.submit();
+      reset(gui, sim);
     }
 
+    step(gui.pause, gui, sim);
+    step(gui.pause, gui, sim);
     step(gui.pause, gui, sim);
     step(gui.pause, gui, sim);
     step(gui.pause, gui, sim);
