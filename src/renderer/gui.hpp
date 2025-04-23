@@ -3,7 +3,7 @@
 
 #include "../utils/types.hpp"
 #include "imgui.h"
-#include "imgui_impl_bgfx.hpp"
+#include "imgui_impl_bgfx.h"
 #include "imgui_impl_glfw.h"
 #include <GLFW/glfw3.h>
 

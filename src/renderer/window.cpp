@@ -7,6 +7,7 @@ Window::Window(int width, int height, const char *title) {
     return;
   }
 
+  glfwWindowHint(GLFW_RESIZABLE, GLFW_FALSE);
   glfwWindowHint(GLFW_CLIENT_API, GLFW_NO_API);
   window = glfwCreateWindow(width, height, title, nullptr, nullptr);
 

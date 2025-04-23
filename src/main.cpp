@@ -9,6 +9,72 @@
 #include "renderer/renderer.hpp"
 #include "renderer/window.hpp"
 
+struct SimulationData {
+  UniformBuffer &u_gravityStatus;
+  UniformBuffer &u_resolution;
+  UniformBuffer &u_mouse;
+  UniformBuffer &u_mouseStrength;
+  UniformBuffer &u_mouseRadius;
+  UniformBuffer &u_numPoints;
+  UniformBuffer &u_radius;
+  UniformBuffer &u_pressureMultiplier;
+  UniformBuffer &u_targetPressure;
+
+  ComputeBuffer &particleBuffer;
+  ComputeBuffer &densitiesBuffer;
+  ComputeBuffer &velocitiesBuffer;
+  ComputeBuffer &predictionsBuffer;
+
+  ComputeProgram &step1Program;
+  ComputeProgram &step2Program;
+  ComputeProgram &step3Program;
+  ComputeProgram &step4Program;
+};
+
+void step(int pause, Gui &gui, SimulationData &sim) {
+  if (pause != 1) {
+    sim.u_gravityStatus.bindUniform(gui);
+    sim.u_resolution.bindUniform(gui);
+    sim.u_mouse.bindUniform(gui);
+    sim.u_mouseStrength.bindUniform(gui);
+    sim.u_mouseRadius.bindUniform(gui);
+
+    sim.particleBuffer.bind();
+    sim.velocitiesBuffer.bind();
+    sim.predictionsBuffer.bind();
+    sim.step1Program.submit();
+
+    sim.u_numPoints.bindUniform(gui);
+    sim.u_radius.bindUniform(gui);
+    sim.u_resolution.bindUniform(gui);
+    sim.particleBuffer.bind();
+    sim.densitiesBuffer.bind();
+    sim.velocitiesBuffer.bind();
+    sim.predictionsBuffer.bind();
+    sim.step2Program.submit();
+
+    sim.u_numPoints.bindUniform(gui);
+    sim.u_radius.bindUniform(gui);
+    sim.u_resolution.bindUniform(gui);
+    sim.u_pressureMultiplier.bindUniform(gui);
+    sim.u_targetPressure.bindUniform(gui);
+    sim.particleBuffer.bind();
+    sim.densitiesBuffer.bind();
+    sim.velocitiesBuffer.bind();
+    sim.predictionsBuffer.bind();
+    sim.step3Program.submit();
+
+    sim.u_numPoints.bindUniform(gui);
+    sim.u_radius.bindUniform(gui);
+    sim.u_resolution.bindUniform(gui);
+    sim.particleBuffer.bind();
+    sim.densitiesBuffer.bind();
+    sim.velocitiesBuffer.bind();
+    sim.predictionsBuffer.bind();
+    sim.step4Program.submit();
+  }
+}
+
 int main() {
   Window window(1000, 1000, "Water Renderer");
   Renderer renderer(window.getNativeWindow(), 2000, 2000);
@@ -52,6 +118,13 @@ int main() {
   ComputeProgram step4Program("src/shaders/step4.compute.bin", gui.numParticles,
                               1, 1);
 
+  SimulationData sim = {
+      u_gravityStatus,   u_resolution,   u_mouse,         u_mouseStrength,
+      u_mouseRadius,     u_numPoints,    u_radius,        u_pressureMultiplier,
+      u_targetPressure,  particleBuffer, densitiesBuffer, velocitiesBuffer,
+      predictionsBuffer, step1Program,   step2Program,    step3Program,
+      step4Program};
+
   //------------------------------------------------------------------------------------
   // Generate positions of particles
   u_numPoints.bindUniform(gui);
@@ -94,52 +167,9 @@ int main() {
       posGenProgram.submit();
     }
 
-    if (gui.pause == 0) {
-      u_gravityStatus.bindUniform(gui);
-      u_resolution.bindUniform(gui);
-      u_mouse.bindUniform(gui);
-      u_mouseStrength.bindUniform(gui);
-      u_mouseRadius.bindUniform(gui);
-      particleBuffer.bind();
-      velocitiesBuffer.bind();
-      predictionsBuffer.bind();
-      step1Program.submit();
-
-      //------------------------------------------------------------------------------------
-      // Calculate cached densities of particle positions
-      u_numPoints.bindUniform(gui);
-      u_radius.bindUniform(gui);
-      u_resolution.bindUniform(gui);
-      particleBuffer.bind();
-      densitiesBuffer.bind();
-      velocitiesBuffer.bind();
-      predictionsBuffer.bind();
-      step2Program.submit();
-
-      //------------------------------------------------------------------------------------
-      // Calculate velocity based on pressure force of particle
-      u_numPoints.bindUniform(gui);
-      u_radius.bindUniform(gui);
-      u_resolution.bindUniform(gui);
-      u_pressureMultiplier.bindUniform(gui);
-      u_targetPressure.bindUniform(gui);
-      particleBuffer.bind();
-      densitiesBuffer.bind();
-      velocitiesBuffer.bind();
-      predictionsBuffer.bind();
-      step3Program.submit();
-
-      //------------------------------------------------------------------------------------
-      // Update positions and handle boundaries colistions
-      u_numPoints.bindUniform(gui);
-      u_radius.bindUniform(gui);
-      u_resolution.bindUniform(gui);
-      particleBuffer.bind();
-      densitiesBuffer.bind();
-      velocitiesBuffer.bind();
-      predictionsBuffer.bind();
-      step4Program.submit();
-    }
+    step(gui.pause, gui, sim);
+    step(gui.pause, gui, sim);
+    step(gui.pause, gui, sim);
 
     vbo.bind();
     ibo.bind();
