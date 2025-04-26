@@ -14,6 +14,7 @@ Renderer::Renderer(GLFWwindow *window, int width, int height)
     : width(width), height(height) {
   bgfx::renderFrame();
 
+  // Create metal renderer
   bgfx::Init init;
   init.type = bgfx::RendererType::Metal;
   init.platformData.nwh = glfwGetCocoaWindow(window);
@@ -22,12 +23,14 @@ Renderer::Renderer(GLFWwindow *window, int width, int height)
   init.resolution.reset = BGFX_RESET_VSYNC;
   init.debug = true;
 
+  // Try to initialize BGFX
   if (!bgfx::init(init)) {
     std::cerr << "Failed to initialize BGFX!" << std::endl;
   } else {
     std::cout << "BGFX initialized successfully!" << std::endl;
   }
 
+  // Set color and size of renderer
   bgfx::setViewClear(0, BGFX_CLEAR_COLOR | BGFX_CLEAR_DEPTH, 0x202020ff, 1.0f,
                      0);
   bgfx::setViewRect(0, 0, 0, width, height);
@@ -36,6 +39,7 @@ Renderer::Renderer(GLFWwindow *window, int width, int height)
 Renderer::~Renderer() { bgfx::shutdown(); }
 
 void Renderer::renderFrame() {
+  // Clear frame before rendering frame
   bgfx::touch(0);
   bgfx::frame();
 }

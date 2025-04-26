@@ -139,24 +139,30 @@ void renderShader(const Gui &gui, SimulationData &sim) {
 };
 
 int main() {
+  // Create window, renderer and gui
   Window window(1000, 1000, "Water Renderer");
   Renderer renderer(window.getNativeWindow(), 2000, 2000);
   Gui gui(window.getNativeWindow());
 
+  // Call constructors of buffers, shaders
   SimulationData sim(gui.numParticles);
 
+  // Generate particle pos on start
   reset(gui, sim);
 
   while (!window.shouldClose()) {
     window.pollEvents();
 
+    // Cursor position
     glfwGetCursorPos(window.getNativeWindow(), &gui.mousePosX, &gui.mousePosY);
 
+    // Mouse button 'getters"
     int leftMouse =
         glfwGetMouseButton(window.getNativeWindow(), GLFW_MOUSE_BUTTON_LEFT);
     int rightMouse =
         glfwGetMouseButton(window.getNativeWindow(), GLFW_MOUSE_BUTTON_RIGHT);
 
+    // Handle mouse buttons clicking
     if (leftMouse == GLFW_PRESS) {
       gui.mouseButton = 1;
     } else if (rightMouse == GLFW_PRESS) {
@@ -165,20 +171,25 @@ int main() {
       gui.mouseButton = 0;
     }
 
+    // Reset particle pos on gui click
     if (gui.reset) {
       reset(gui, sim);
     }
 
+    // Each step is running all sim compute shaders
     step(gui.pause, gui, sim);
     step(gui.pause, gui, sim);
     step(gui.pause, gui, sim);
     step(gui.pause, gui, sim);
     step(gui.pause, gui, sim);
 
+    // Shader that renders things on screen
     renderShader(gui, sim);
 
+    // Rendering ImGui
     gui.render();
 
+    // Rendering frame
     renderer.renderFrame();
   }
 
