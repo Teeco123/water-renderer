@@ -73,7 +73,7 @@ struct SimulationData {
                       "src/shaders/shader.fragment.bin") {}
 };
 
-MouseState HandleMouse(Gui gui, Window window) {
+MouseState HandleMouse(Gui &gui, Window &window) {
   glfwGetCursorPos(window.getNativeWindow(), &gui.mousePosX, &gui.mousePosY);
 
   int leftMouse =
@@ -176,7 +176,7 @@ int main() {
   while (!window.shouldClose()) {
     window.pollEvents();
 
-    // HandleMouse(gui, window);
+    HandleMouse(gui, window);
 
     if (gui.reset) {
       ResetParticlePos(gui, sim);
