@@ -1,64 +1,7 @@
 #include "uniformBuffer.hpp"
 
-UniformBuffer::UniformBuffer(const char *buffName) {
-
-  if (strcmp(buffName, "u_numParticles") == 0) {
-    uniformName = buffName;
-    type = bgfx::UniformType::Vec4;
-  }
-  if (strcmp(buffName, "u_radius") == 0) {
-    uniformName = buffName;
-    type = bgfx::UniformType::Vec4;
-  }
-  if (strcmp(buffName, "u_resolution") == 0) {
-    uniformName = buffName;
-    type = bgfx::UniformType::Vec4;
-  }
-  if (strcmp(buffName, "u_particleSize") == 0) {
-    uniformName = buffName;
-    type = bgfx::UniformType::Vec4;
-  }
-  if (strcmp(buffName, "u_randomSeed") == 0) {
-    uniformName = buffName;
-    type = bgfx::UniformType::Vec4;
-  }
-  if (strcmp(buffName, "u_pressureMultiplier") == 0) {
-    uniformName = buffName;
-    type = bgfx::UniformType::Vec4;
-  }
-  if (strcmp(buffName, "u_particleColorLow") == 0) {
-    uniformName = buffName;
-    type = bgfx::UniformType::Vec4;
-  }
-  if (strcmp(buffName, "u_particleColorHigh") == 0) {
-    uniformName = buffName;
-    type = bgfx::UniformType::Vec4;
-  }
-  if (strcmp(buffName, "u_targetPressure") == 0) {
-    uniformName = buffName;
-    type = bgfx::UniformType::Vec4;
-  }
-  if (strcmp(buffName, "u_gravityStatus") == 0) {
-    uniformName = buffName;
-    type = bgfx::UniformType::Vec4;
-  }
-  if (strcmp(buffName, "u_gravity") == 0) {
-    uniformName = buffName;
-    type = bgfx::UniformType::Vec4;
-  }
-  if (strcmp(buffName, "u_mouse") == 0) {
-    uniformName = buffName;
-    type = bgfx::UniformType::Vec4;
-  }
-  if (strcmp(buffName, "u_mouseStrength") == 0) {
-    uniformName = buffName;
-    type = bgfx::UniformType::Vec4;
-  }
-  if (strcmp(buffName, "u_mouseRadius") == 0) {
-    uniformName = buffName;
-    type = bgfx::UniformType::Vec4;
-  }
-
+UniformBuffer::UniformBuffer(const char *buffName)
+    : uniformName(buffName), type(bgfx::UniformType::Vec4) {
   buffer = bgfx::createUniform(uniformName.c_str(), type);
 }
 
