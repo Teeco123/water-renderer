@@ -9,6 +9,11 @@
 #include "renderer/renderer.hpp"
 #include "renderer/window.hpp"
 
+struct MouseState {
+  double cursorPosX, cursorPosY;
+  int mouseButton;
+};
+
 struct SimulationData {
   UniformBuffer u_gravityStatus;
   UniformBuffer u_gravity;
@@ -68,7 +73,26 @@ struct SimulationData {
                       "src/shaders/shader.fragment.bin") {}
 };
 
-void reset(Gui &gui, SimulationData &sim) {
+MouseState HandleMouse(Gui gui, Window window) {
+  glfwGetCursorPos(window.getNativeWindow(), &gui.mousePosX, &gui.mousePosY);
+
+  int leftMouse =
+      glfwGetMouseButton(window.getNativeWindow(), GLFW_MOUSE_BUTTON_LEFT);
+  int rightMouse =
+      glfwGetMouseButton(window.getNativeWindow(), GLFW_MOUSE_BUTTON_RIGHT);
+
+  if (leftMouse == GLFW_PRESS) {
+    gui.mouseButton = 1;
+  } else if (rightMouse == GLFW_PRESS) {
+    gui.mouseButton = 2;
+  } else {
+    gui.mouseButton = 0;
+  }
+
+  return {gui.mousePosX, gui.mousePosY, gui.mouseButton};
+};
+
+void ResetParticlePos(Gui &gui, SimulationData &sim) {
   sim.u_numPoints.bindUniform(gui);
   sim.u_radius.bindUniform(gui);
   sim.u_resolution.bindUniform(gui);
@@ -79,7 +103,7 @@ void reset(Gui &gui, SimulationData &sim) {
   sim.posGenProgram.submit();
 }
 
-void step(int pause, Gui &gui, SimulationData &sim) {
+void SimulationStep(int pause, Gui &gui, SimulationData &sim) {
   if (pause != 1) {
     sim.u_gravityStatus.bindUniform(gui);
     sim.u_gravity.bindUniform(gui);
@@ -123,7 +147,7 @@ void step(int pause, Gui &gui, SimulationData &sim) {
   }
 }
 
-void renderShader(const Gui &gui, SimulationData &sim) {
+void RenderShader(const Gui &gui, SimulationData &sim) {
   sim.vbo.bind();
   sim.ibo.bind();
   sim.u_numPoints.bindUniform(gui);
@@ -139,57 +163,31 @@ void renderShader(const Gui &gui, SimulationData &sim) {
 };
 
 int main() {
-  // Create window, renderer and gui
   Window window(1000, 1000, "Water Renderer");
   Renderer renderer(window.getNativeWindow(), 2000, 2000);
   Gui gui(window.getNativeWindow());
 
-  // Call constructors of buffers, shaders
   SimulationData sim(gui.numParticles);
 
-  // Generate particle pos on start
-  reset(gui, sim);
+  ResetParticlePos(gui, sim);
 
   while (!window.shouldClose()) {
     window.pollEvents();
 
-    // Cursor position
-    glfwGetCursorPos(window.getNativeWindow(), &gui.mousePosX, &gui.mousePosY);
+    HandleMouse(gui, window);
 
-    // Mouse button 'getters"
-    int leftMouse =
-        glfwGetMouseButton(window.getNativeWindow(), GLFW_MOUSE_BUTTON_LEFT);
-    int rightMouse =
-        glfwGetMouseButton(window.getNativeWindow(), GLFW_MOUSE_BUTTON_RIGHT);
-
-    // Handle mouse buttons clicking
-    if (leftMouse == GLFW_PRESS) {
-      gui.mouseButton = 1;
-    } else if (rightMouse == GLFW_PRESS) {
-      gui.mouseButton = 2;
-    } else {
-      gui.mouseButton = 0;
-    }
-
-    // Reset particle pos on gui click
     if (gui.reset) {
-      reset(gui, sim);
+      ResetParticlePos(gui, sim);
     }
 
-    // Each step is running all sim compute shaders
-    step(gui.pause, gui, sim);
-    step(gui.pause, gui, sim);
-    step(gui.pause, gui, sim);
-    step(gui.pause, gui, sim);
-    step(gui.pause, gui, sim);
+    SimulationStep(gui.pause, gui, sim);
+    SimulationStep(gui.pause, gui, sim);
+    SimulationStep(gui.pause, gui, sim);
+    SimulationStep(gui.pause, gui, sim);
+    SimulationStep(gui.pause, gui, sim);
 
-    // Shader that renders things on screen
-    renderShader(gui, sim);
-
-    // Rendering ImGui
+    RenderShader(gui, sim);
     gui.render();
-
-    // Rendering frame
     renderer.renderFrame();
   }
 
