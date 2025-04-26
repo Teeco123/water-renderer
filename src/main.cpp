@@ -103,47 +103,49 @@ void ResetParticlePos(Gui &gui, SimulationData &sim) {
   sim.posGenProgram.submit();
 }
 
-void SimulationStep(int pause, Gui &gui, SimulationData &sim) {
-  if (pause != 1) {
-    sim.u_gravityStatus.bindUniform(gui);
-    sim.u_gravity.bindUniform(gui);
-    sim.u_resolution.bindUniform(gui);
-    sim.u_mouse.bindUniform(gui);
-    sim.u_mouseStrength.bindUniform(gui);
-    sim.u_mouseRadius.bindUniform(gui);
-    sim.particleBuffer.bind();
-    sim.velocitiesBuffer.bind();
-    sim.predictionsBuffer.bind();
-    sim.step1Program.submit();
+void SimulationStep(int steps, Gui &gui, SimulationData &sim) {
+  for (int i = 0; i < steps; i++) {
+    if (gui.pause != 1) {
+      sim.u_gravityStatus.bindUniform(gui);
+      sim.u_gravity.bindUniform(gui);
+      sim.u_resolution.bindUniform(gui);
+      sim.u_mouse.bindUniform(gui);
+      sim.u_mouseStrength.bindUniform(gui);
+      sim.u_mouseRadius.bindUniform(gui);
+      sim.particleBuffer.bind();
+      sim.velocitiesBuffer.bind();
+      sim.predictionsBuffer.bind();
+      sim.step1Program.submit();
 
-    sim.u_numPoints.bindUniform(gui);
-    sim.u_radius.bindUniform(gui);
-    sim.u_resolution.bindUniform(gui);
-    sim.particleBuffer.bind();
-    sim.densitiesBuffer.bind();
-    sim.velocitiesBuffer.bind();
-    sim.predictionsBuffer.bind();
-    sim.step2Program.submit();
+      sim.u_numPoints.bindUniform(gui);
+      sim.u_radius.bindUniform(gui);
+      sim.u_resolution.bindUniform(gui);
+      sim.particleBuffer.bind();
+      sim.densitiesBuffer.bind();
+      sim.velocitiesBuffer.bind();
+      sim.predictionsBuffer.bind();
+      sim.step2Program.submit();
 
-    sim.u_numPoints.bindUniform(gui);
-    sim.u_radius.bindUniform(gui);
-    sim.u_resolution.bindUniform(gui);
-    sim.u_pressureMultiplier.bindUniform(gui);
-    sim.u_targetPressure.bindUniform(gui);
-    sim.particleBuffer.bind();
-    sim.densitiesBuffer.bind();
-    sim.velocitiesBuffer.bind();
-    sim.predictionsBuffer.bind();
-    sim.step3Program.submit();
+      sim.u_numPoints.bindUniform(gui);
+      sim.u_radius.bindUniform(gui);
+      sim.u_resolution.bindUniform(gui);
+      sim.u_pressureMultiplier.bindUniform(gui);
+      sim.u_targetPressure.bindUniform(gui);
+      sim.particleBuffer.bind();
+      sim.densitiesBuffer.bind();
+      sim.velocitiesBuffer.bind();
+      sim.predictionsBuffer.bind();
+      sim.step3Program.submit();
 
-    sim.u_numPoints.bindUniform(gui);
-    sim.u_radius.bindUniform(gui);
-    sim.u_resolution.bindUniform(gui);
-    sim.particleBuffer.bind();
-    sim.densitiesBuffer.bind();
-    sim.velocitiesBuffer.bind();
-    sim.predictionsBuffer.bind();
-    sim.step4Program.submit();
+      sim.u_numPoints.bindUniform(gui);
+      sim.u_radius.bindUniform(gui);
+      sim.u_resolution.bindUniform(gui);
+      sim.particleBuffer.bind();
+      sim.densitiesBuffer.bind();
+      sim.velocitiesBuffer.bind();
+      sim.predictionsBuffer.bind();
+      sim.step4Program.submit();
+    }
   }
 }
 
@@ -174,17 +176,13 @@ int main() {
   while (!window.shouldClose()) {
     window.pollEvents();
 
-    HandleMouse(gui, window);
+    // HandleMouse(gui, window);
 
     if (gui.reset) {
       ResetParticlePos(gui, sim);
     }
 
-    SimulationStep(gui.pause, gui, sim);
-    SimulationStep(gui.pause, gui, sim);
-    SimulationStep(gui.pause, gui, sim);
-    SimulationStep(gui.pause, gui, sim);
-    SimulationStep(gui.pause, gui, sim);
+    SimulationStep(3, gui, sim);
 
     RenderShader(gui, sim);
     gui.render();
