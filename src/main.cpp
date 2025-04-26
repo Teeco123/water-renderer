@@ -30,11 +30,16 @@ struct SimulationData {
   ComputeBuffer velocitiesBuffer;
   ComputeBuffer predictionsBuffer;
 
+  VertexBuffer vbo;
+  IndexBuffer ibo;
+
   ComputeProgram posGenProgram;
   ComputeProgram step1Program;
   ComputeProgram step2Program;
   ComputeProgram step3Program;
   ComputeProgram step4Program;
+
+  ShaderProgram shaderProgram;
 
   SimulationData(int numParticles)
       : u_gravityStatus("u_gravityStatus"), u_gravity("u_gravity"),
@@ -50,11 +55,17 @@ struct SimulationData {
         densitiesBuffer(2, "densitiesBuffer", bgfx::Access::ReadWrite),
         velocitiesBuffer(3, "velocitiesBuffer", bgfx::Access::ReadWrite),
         predictionsBuffer(4, "predictionsBuffer", bgfx::Access::ReadWrite),
+
+        vbo(0, "screenVBO"), ibo("screenIBO"),
+
         posGenProgram("src/shaders/posGen.compute.bin", numParticles, 1, 1),
         step1Program("src/shaders/step1.compute.bin", numParticles, 1, 1),
         step2Program("src/shaders/step2.compute.bin", numParticles, 1, 1),
         step3Program("src/shaders/step3.compute.bin", numParticles, 1, 1),
-        step4Program("src/shaders/step4.compute.bin", numParticles, 1, 1) {}
+        step4Program("src/shaders/step4.compute.bin", numParticles, 1, 1),
+
+        shaderProgram("src/shaders/shader.vertex.bin",
+                      "src/shaders/shader.fragment.bin") {}
 };
 
 void reset(Gui &gui, SimulationData &sim) {
@@ -112,16 +123,25 @@ void step(int pause, Gui &gui, SimulationData &sim) {
   }
 }
 
+void renderShader(const Gui &gui, SimulationData &sim) {
+  sim.vbo.bind();
+  sim.ibo.bind();
+  sim.u_numPoints.bindUniform(gui);
+  sim.u_radius.bindUniform(gui);
+  sim.u_resolution.bindUniform(gui);
+  sim.u_particleSize.bindUniform(gui);
+  sim.u_pressureMultiplier.bindUniform(gui);
+  sim.u_particleColorLow.bindUniform(gui);
+  sim.u_particleColorHigh.bindUniform(gui);
+  sim.particleBuffer.bind();
+  sim.velocitiesBuffer.bind();
+  sim.shaderProgram.submit();
+};
+
 int main() {
   Window window(1000, 1000, "Water Renderer");
   Renderer renderer(window.getNativeWindow(), 2000, 2000);
   Gui gui(window.getNativeWindow());
-
-  VertexBuffer vbo(0, "screenVBO");
-  IndexBuffer ibo("screenIBO");
-
-  ShaderProgram shaderProgram("src/shaders/shader.vertex.bin",
-                              "src/shaders/shader.fragment.bin");
 
   SimulationData sim(gui.numParticles);
 
@@ -155,18 +175,7 @@ int main() {
     step(gui.pause, gui, sim);
     step(gui.pause, gui, sim);
 
-    vbo.bind();
-    ibo.bind();
-    sim.u_numPoints.bindUniform(gui);
-    sim.u_radius.bindUniform(gui);
-    sim.u_resolution.bindUniform(gui);
-    sim.u_particleSize.bindUniform(gui);
-    sim.u_pressureMultiplier.bindUniform(gui);
-    sim.u_particleColorLow.bindUniform(gui);
-    sim.u_particleColorHigh.bindUniform(gui);
-    sim.particleBuffer.bind();
-    sim.velocitiesBuffer.bind();
-    shaderProgram.submit();
+    renderShader(gui, sim);
 
     gui.render();
 
