@@ -3,7 +3,7 @@
 	url = https://github.com/glfw/glfw
 [submodule "lib/bgfx-cmake"]
 	path = lib/bgfx-cmake
-	url = https://github.com/bkaradzic/bgfx.cmake
+	url = https://github.com/Teeco123/bgfx-cmake
 [submodule "lib/imgui"]
 	path = lib/imgui
 	url = https://github.com/Teeco123/imgui.git
