@@ -10,7 +10,10 @@
     {
       devShells.aarch64-darwin.default =
         let
-          pkgs = import nixpkgs { system = "aarch64-darwin"; };
+          pkgs = import nixpkgs {
+            system = "aarch64-darwin";
+            config.allowUnfree = true;
+          };
         in
         pkgs.mkShell {
           buildInputs = with pkgs; [
@@ -19,6 +22,7 @@
             nil
             llvm_20
             cmake
+            apple-sdk_15
           ];
           shellHook = ''
             echo "Welcome to your sugarspice shop dev environment!"

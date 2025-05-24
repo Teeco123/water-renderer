@@ -1,6 +1,30 @@
 cmake_minimum_required(VERSION 3.20)
 project(WaterRenderer)
 
+# Set minimum macOS version to 14.0 (Sonoma)
+set(CMAKE_OSX_DEPLOYMENT_TARGET "14.0" CACHE STRING "Minimum OS X deployment version")
+
+# Automatically detect the macOS SDK path using xcrun
+execute_process(
+    COMMAND xcrun --sdk macosx --show-sdk-path
+    OUTPUT_VARIABLE MACOS_SDK_PATH
+    OUTPUT_STRIP_TRAILING_WHITESPACE
+)
+
+# Use the detected SDK path for compilation and linking
+set(CMAKE_OSX_SYSROOT ${MACOS_SDK_PATH})
+
+# Add compile and link options to use the correct SDK and deployment target
+add_compile_options(
+    "-isysroot" "${MACOS_SDK_PATH}"
+    "-mmacosx-version-min=14.0"
+)
+
+add_link_options(
+    "-isysroot" "${MACOS_SDK_PATH}"
+    "-mmacosx-version-min=14.0"
+)
+
 # Set C++ standard
 set(CMAKE_CXX_STANDARD 23)
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
@@ -34,3 +58,4 @@ target_link_libraries(WaterRenderer bgfx glfw bx
 set_target_properties(WaterRenderer PROPERTIES
     RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin
 )
+
