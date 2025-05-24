@@ -10,9 +10,9 @@ ShaderProgram::ShaderProgram(const char *vertex, const char *fragment) {
   program = bgfx::createProgram(vertexShader, fragmentShader, true);
 
   if (!bgfx::isValid(program)) {
-    std::cout << "Shader is invalid";
+    std::cout << "Shader program is invalid\n";
   } else {
-    std::cout << "Shader is valid";
+    std::cout << "Shader program is valid\n";
   }
 }
 

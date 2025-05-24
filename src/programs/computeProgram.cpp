@@ -14,9 +14,9 @@ ComputeProgram::ComputeProgram(const char *compute, uint32_t groupXInt,
   program = bgfx::createProgram(computeShader, true);
 
   if (!bgfx::isValid(program)) {
-    std::cout << name << " - Shader is invalid";
+    std::cout << name << " - Shader is invalid\n";
   } else {
-    std::cout << name << " - Shader is valid";
+    std::cout << name << " - Shader is valid\n";
   }
 }
 
