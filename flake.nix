@@ -20,6 +20,7 @@
             zsh
             nixfmt-rfc-style
             nil
+            glsl_analyzer
             llvm_20
             cmake
             apple-sdk_15
