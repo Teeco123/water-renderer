@@ -1,34 +1,41 @@
 {
-  description = "A very basic flake";
-
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs?ref=nixos-unstable";
+
+    flake-utils = {
+      url = "github:numtide/flake-utils";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs =
-    { self, nixpkgs }:
     {
-      devShells.aarch64-darwin.default =
-        let
-          pkgs = import nixpkgs {
-            system = "aarch64-darwin";
-            config.allowUnfree = true;
-          };
-        in
-        pkgs.mkShell {
-          buildInputs = with pkgs; [
-            zsh
-            nixfmt-rfc-style
-            nil
-            glsl_analyzer
-            llvm_20
-            cmake
-            apple-sdk_15
-          ];
-          shellHook = ''
-            echo "Welcome to your sugarspice shop dev environment!"
-          '';
+      self,
+      nixpkgs,
+      flake-utils,
+    }:
+    flake-utils.lib.eachDefaultSystem (
+      system:
+      let
+        pkgs = import nixpkgs {
+          inherit system;
+          config.allowUnfree = true;
         };
-    };
-
+      in
+      {
+        devShells.default = pkgs.mkShell {
+          buildInputs =
+            with pkgs;
+            [
+              zsh
+              nixfmt-rfc-style
+              nil
+              glsl_analyzer
+              llvm_20
+              cmake
+            ]
+            ++ lib.optional (pkgs.stdenv.isDarwin) apple-sdk_15;
+        };
+      }
+    );
 }
