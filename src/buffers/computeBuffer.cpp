@@ -64,4 +64,8 @@ void ComputeBuffer::bind() { bgfx::setBuffer(stage, buffer, access); }
 
 void ComputeBuffer::destroy() { bgfx::destroy(buffer); }
 
+bgfx::DynamicVertexBufferHandle ComputeBuffer::GetHandle() const {
+  return buffer;
+}
+
 ComputeBuffer::~ComputeBuffer() { destroy(); }
