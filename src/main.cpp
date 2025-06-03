@@ -73,13 +73,13 @@ struct SimulationData {
                       "src/shaders/shader.fragment.bin") {}
 };
 
-MouseState HandleMouse(Gui *gui, Window &window) {
-  glfwGetCursorPos(window.getNativeWindow(), &gui->mousePosX, &gui->mousePosY);
+MouseState HandleMouse(Gui *gui, Window *window) {
+  glfwGetCursorPos(window->getNativeWindow(), &gui->mousePosX, &gui->mousePosY);
 
   int leftMouse =
-      glfwGetMouseButton(window.getNativeWindow(), GLFW_MOUSE_BUTTON_LEFT);
+      glfwGetMouseButton(window->getNativeWindow(), GLFW_MOUSE_BUTTON_LEFT);
   int rightMouse =
-      glfwGetMouseButton(window.getNativeWindow(), GLFW_MOUSE_BUTTON_RIGHT);
+      glfwGetMouseButton(window->getNativeWindow(), GLFW_MOUSE_BUTTON_RIGHT);
 
   if (leftMouse == GLFW_PRESS) {
     gui->mouseButton = 1;
@@ -165,16 +165,16 @@ void RenderShader(const Gui *gui, SimulationData &sim) {
 };
 
 int main() {
-  Window window(1000, 1000, "Water Renderer");
-  Renderer renderer(window.getNativeWindow(), 2000, 2000);
-  Gui *gui = Gui::getInstance(window.getNativeWindow());
+  Window *window = Window::getInstance(1000, 1000, "Water Renderer");
+  Renderer renderer(window->getNativeWindow(), 2000, 2000);
+  Gui *gui = Gui::getInstance(window->getNativeWindow());
 
   SimulationData sim(gui->numParticles);
 
   ResetParticlePos(gui, sim);
 
-  while (!window.shouldClose()) {
-    window.pollEvents();
+  while (!window->shouldClose()) {
+    window->pollEvents();
 
     HandleMouse(gui, window);
 
