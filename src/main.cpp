@@ -73,8 +73,8 @@ struct SimulationData {
                       "src/shaders/shader.fragment.bin") {}
 };
 
-MouseState HandleMouse(Gui &gui, Window &window) {
-  glfwGetCursorPos(window.getNativeWindow(), &gui.mousePosX, &gui.mousePosY);
+MouseState HandleMouse(Gui *gui, Window &window) {
+  glfwGetCursorPos(window.getNativeWindow(), &gui->mousePosX, &gui->mousePosY);
 
   int leftMouse =
       glfwGetMouseButton(window.getNativeWindow(), GLFW_MOUSE_BUTTON_LEFT);
@@ -82,17 +82,17 @@ MouseState HandleMouse(Gui &gui, Window &window) {
       glfwGetMouseButton(window.getNativeWindow(), GLFW_MOUSE_BUTTON_RIGHT);
 
   if (leftMouse == GLFW_PRESS) {
-    gui.mouseButton = 1;
+    gui->mouseButton = 1;
   } else if (rightMouse == GLFW_PRESS) {
-    gui.mouseButton = 2;
+    gui->mouseButton = 2;
   } else {
-    gui.mouseButton = 0;
+    gui->mouseButton = 0;
   }
 
-  return {gui.mousePosX, gui.mousePosY, gui.mouseButton};
+  return {gui->mousePosX, gui->mousePosY, gui->mouseButton};
 };
 
-void ResetParticlePos(Gui &gui, SimulationData &sim) {
+void ResetParticlePos(const Gui *gui, SimulationData &sim) {
   sim.u_numPoints.bindUniform(gui);
   sim.u_radius.bindUniform(gui);
   sim.u_resolution.bindUniform(gui);
@@ -103,9 +103,9 @@ void ResetParticlePos(Gui &gui, SimulationData &sim) {
   sim.posGenProgram.submit();
 }
 
-void SimulationStep(int steps, Gui &gui, SimulationData &sim) {
+void SimulationStep(int steps, const Gui *gui, SimulationData &sim) {
   for (int i = 0; i < steps; i++) {
-    if (gui.pause != 1) {
+    if (gui->pause != 1) {
       sim.u_gravityStatus.bindUniform(gui);
       sim.u_gravity.bindUniform(gui);
       sim.u_resolution.bindUniform(gui);
@@ -149,7 +149,7 @@ void SimulationStep(int steps, Gui &gui, SimulationData &sim) {
   }
 }
 
-void RenderShader(const Gui &gui, SimulationData &sim) {
+void RenderShader(const Gui *gui, SimulationData &sim) {
   sim.vbo.bind();
   sim.ibo.bind();
   sim.u_numPoints.bindUniform(gui);
@@ -167,9 +167,9 @@ void RenderShader(const Gui &gui, SimulationData &sim) {
 int main() {
   Window window(1000, 1000, "Water Renderer");
   Renderer renderer(window.getNativeWindow(), 2000, 2000);
-  Gui gui(window.getNativeWindow());
+  Gui *gui = Gui::getInstance(window.getNativeWindow());
 
-  SimulationData sim(gui.numParticles);
+  SimulationData sim(gui->numParticles);
 
   ResetParticlePos(gui, sim);
 
@@ -178,14 +178,14 @@ int main() {
 
     HandleMouse(gui, window);
 
-    if (gui.reset) {
+    if (gui->reset) {
       ResetParticlePos(gui, sim);
     }
 
     SimulationStep(3, gui, sim);
 
     RenderShader(gui, sim);
-    gui.render();
+    gui->render();
     renderer.renderFrame();
   }
 

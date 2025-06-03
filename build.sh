@@ -17,7 +17,7 @@ $SHADERC -f src/shaders/shader.vertex -o src/shaders/shader.vertex.bin -i lib/bg
 $SHADERC -f src/shaders/shader.fragment -o src/shaders/shader.fragment.bin -i lib/bgfx-cmake/bgfx/src --platform osx -p metal --type fragment
 
 mkdir build/bin/src
-cp -r src/shaders build/bin/src/shaders/
+cp -r src/shaders/*.bin build/bin/src/shaders/
 
 echo "Running the project..."
 ./build/bin/WaterRenderer

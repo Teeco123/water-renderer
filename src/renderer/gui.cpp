@@ -1,10 +1,31 @@
 #include "gui.hpp"
 #include "imgui.h"
+#include "imgui_impl_glfw.h"
+#include <stdexcept>
 
-Gui::Gui(GLFWwindow *window) {
+Gui *Gui::instance = nullptr;
+
+Gui::Gui(GLFWwindow *window) : window(window) {
   ImGui::CreateContext();
   ImGui_Implbgfx_Init(255);
   ImGui_ImplGlfw_InitForOpenGL(window, true);
+}
+
+Gui *Gui::getInstance(GLFWwindow *window) {
+  if (instance == nullptr) {
+    if (window == nullptr) {
+      throw std::runtime_error("Window required for first GUI initialization");
+    }
+    instance = new Gui(window);
+  }
+  return instance;
+}
+
+void Gui::cleanup() {
+  if (instance != nullptr) {
+    delete instance;
+    instance = nullptr;
+  }
 }
 
 Gui::~Gui() {

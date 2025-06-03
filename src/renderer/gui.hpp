@@ -1,18 +1,18 @@
-#ifndef GUI_HPP
-#define GUI_HPP
+#pragma once
 
 #include "../utils/types.hpp"
-#include "imgui.h"
 #include "imgui_impl_bgfx.h"
-#include "imgui_impl_glfw.h"
 #include <GLFW/glfw3.h>
 
 class Gui {
 public:
-  Gui(GLFWwindow *window);
-  ~Gui();
+  Gui(const Gui &) = delete;
+  Gui &operator=(const Gui &) = delete;
 
+  static Gui *getInstance(GLFWwindow *window = nullptr);
+  static void cleanup();
   void render();
+  ~Gui();
 
   int resX, resY;
   int numParticles = 3;
@@ -34,6 +34,9 @@ public:
 
   int pause = 0;
   bool reset = false;
-};
 
-#endif
+private:
+  static Gui *instance;
+  GLFWwindow *window;
+  Gui(GLFWwindow *window);
+};

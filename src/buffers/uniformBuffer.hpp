@@ -15,7 +15,7 @@ public:
   UniformBuffer(const char *buffName);
   void bind() override;
   void destroy() override;
-  void bindUniform(const Gui &gui);
+  void bindUniform(const Gui *gui);
 
   bgfx::UniformHandle Get() const;
 
