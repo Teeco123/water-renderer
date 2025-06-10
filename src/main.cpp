@@ -166,7 +166,8 @@ void RenderShader(const Gui *gui, SimulationData &sim) {
 
 int main() {
   Window *window = Window::getInstance(1000, 1000, "Water Renderer");
-  Renderer renderer(window->getNativeWindow(), 2000, 2000);
+  Renderer *renderer =
+      Renderer::getInstance(window->getNativeWindow(), 2000, 2000);
   Gui *gui = Gui::getInstance(window->getNativeWindow());
 
   SimulationData sim(gui->numParticles);
@@ -186,7 +187,7 @@ int main() {
 
     RenderShader(gui, sim);
     gui->render();
-    renderer.renderFrame();
+    renderer->renderFrame();
   }
 
   return 0;

@@ -9,13 +9,18 @@
 
 class Renderer {
 public:
-  Renderer(GLFWwindow *window, int width, int height);
+  Renderer(const Renderer &) = delete;
+  Renderer &operator=(const Renderer &) = delete;
+  static Renderer *getInstance(GLFWwindow *window, int width, int height);
+  static void cleanup();
   ~Renderer();
 
   void renderFrame();
 
 private:
+  static Renderer *instance;
   int width, height;
+  Renderer(GLFWwindow *window, int width, int height);
 };
 
 #endif

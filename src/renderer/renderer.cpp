@@ -12,15 +12,17 @@
 #define GLFW_EXPOSE_NATIVE_WGL
 #endif
 
+Renderer *Renderer::instance = nullptr;
+
 #include "GLFW/glfw3native.h"
 
 static void *glfwNativeWindowHandle(GLFWwindow *_window) {
 #if BX_PLATFORM_LINUX
   if (GLFW_PLATFORM_WAYLAND == glfwGetPlatform()) {
     return glfwGetWaylandWindow(_window);
+  } else {
+    return (void *)uintptr_t(glfwGetX11Window(_window));
   }
-
-  return (void *)uintptr_t(glfwGetX11Window(_window));
 #elif BX_PLATFORM_OSX
   return glfwGetCocoaWindow(_window);
 #elif BX_PLATFORM_WINDOWS
@@ -62,6 +64,20 @@ Renderer::Renderer(GLFWwindow *window, int width, int height)
   bgfx::setViewClear(0, BGFX_CLEAR_COLOR | BGFX_CLEAR_DEPTH, 0x202020ff, 1.0f,
                      0);
   bgfx::setViewRect(0, 0, 0, width, height);
+}
+
+Renderer *Renderer::getInstance(GLFWwindow *window, int width, int height) {
+  if (instance == nullptr) {
+    instance = new Renderer(window, width, height);
+  }
+  return instance;
+}
+
+void Renderer::cleanup() {
+  if (instance != nullptr) {
+    delete instance;
+    instance = nullptr;
+  }
 }
 
 Renderer::~Renderer() { bgfx::shutdown(); }
